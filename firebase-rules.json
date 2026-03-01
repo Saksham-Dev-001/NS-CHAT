@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "chats": {
+      "$chatId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['participants', 'lastMessage', 'lastMessageTime', 'createdAt'])"
+      }
+    },
+    "messages": {
+      "$messageId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['chatId', 'senderId', 'receiverId', 'text', 'timestamp', 'status'])"
+      }
+    },
+    "typing": {
+      "$typingId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }
+  }
+}

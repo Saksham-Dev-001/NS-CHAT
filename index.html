@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NS CHAT - Real Time Messaging</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --primary: #075E54;
+            --primary-dark: #054c44;
+            --primary-light: #128C7E;
+            --accent: #25D366;
+            --bg-dark: #111b21;
+            --bg-sidebar: #202c33;
+            --bg-chat: #0b141a;
+            --text-primary: #e9edef;
+            --text-secondary: #8696a0;
+            --border-color: #2a3942;
+            --message-sent: #005c4b;
+            --message-received: #202c33;
+        }
+
+        body {
+            background: var(--bg-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Main App Container */
+        #app {
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            width: 1600px;
+            max-width: 100%;
+            height: 100vh;
+            background: var(--bg-chat);
+            display: flex;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        /* ========== LOGIN SCREEN ========== */
+        #login-screen {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: var(--primary);
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: #667781;
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e9edef;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #667781;
+            cursor: pointer;
+        }
+
+        .login-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #3b4a54;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e9edef;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .phone-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .country-code {
+            width: 80px;
+            padding: 14px;
+            background: #f0f2f4;
+            border: 2px solid #e9edef;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+        .btn-primary:disabled {
+            background: #80b5aa;
+            cursor: not-allowed;
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #3b4a54;
+            border: 2px solid #e9edef;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-google i {
+            color: #DB4437;
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 25px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #e9edef;
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: #667781;
+            font-size: 13px;
+        }
+
+        /* OTP Verification */
+        .otp-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e9edef;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .timer {
+            text-align: center;
+            color: #667781;
+            margin: 15px 0;
+        }
+
+        .resend-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .resend-btn:disabled {
+            color: #999;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        /* ========== MAIN APP ========== */
+        #main-app {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-chat);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 30%;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            height: 70px;
+            background: var(--bg-sidebar);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-details h3 {
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .user-details p {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: var(--text-secondary);
+        }
+
+        .header-icons i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .search-container {
+            padding: 10px 15px;
+        }
+
+        .search-box {
+            background: #2a3942;
+            border-radius: 8px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .chats-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        #chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chat-item:hover {
+            background: #2a3942;
+        }
+
+        .chat-item.active {
+            background: #2a3942;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: #4CAF50;
+            border-radius: 50%;
+            border: 2px solid var(--bg-sidebar);
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .chat-last-msg {
+            color: var(--text-secondary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chat-time {
+            color: var(--text-secondary);
+            font-size: 11px;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-chat);
+        }
+
+        .chat-header {
+            height: 70px;
+            background: var(--bg-sidebar);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chat-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-user-info h3 {
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .chat-user-info p {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 20px;
+            color: var(--text-secondary);
+        }
+
+        .chat-actions i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b141a" opacity="0.4"/></svg>');
+        }
+
+        .message {
+            max-width: 65%;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            position: relative;
+            clear: both;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background: var(--message-sent);
+            color: white;
+            float: right;
+            border-radius: 10px 10px 0 10px;
+        }
+
+        .message.received {
+            background: var(--message-received);
+            color: white;
+            float: left;
+            border-radius: 10px 10px 10px 0;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        .message-status {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .message-input-area {
+            background: var(--bg-sidebar);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .message-input-area input {
+            flex: 1;
+            background: #2a3942;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .message-input-area input:focus {
+            outline: none;
+        }
+
+        .message-input-area i {
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 8px 12px;
+            background: var(--message-received);
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8696a0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .welcome-screen {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .welcome-screen i {
+            font-size: 80px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .logout-btn {
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen">
+            <div class="login-header">
+                <i class="fab fa-whatsapp"></i>
+                <h1>NS CHAT</h1>
+                <p>Connect with your world instantly</p>
+            </div>
+
+            <div class="login-tabs">
+                <button class="login-tab active" onclick="switchTab('phone')">Phone</button>
+                <button class="login-tab" onclick="switchTab('email')">Email</button>
+            </div>
+
+            <!-- Phone Login Form -->
+            <div id="phone-login" class="login-form active">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" value="User" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number (India)</label>
+                    <div class="phone-input">
+                        <input type="text" class="country-code" value="+91" readonly>
+                        <input type="tel" id="phone" placeholder="9876543210" maxlength="10" value="9999999999">
+                    </div>
+                </div>
+                <button class="btn-primary" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <button class="btn-google" onclick="googleLogin()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- OTP Verification Form -->
+            <div id="otp-verification" class="login-form">
+                <h3 style="margin-bottom: 20px; color: #075E54;">Enter Verification Code</h3>
+                <p style="text-align: center; margin-bottom: 20px; color: #667781;">
+                    We've sent a 6-digit code to <strong id="display-phone">+91 9999999999</strong>
+                </p>
+                
+                <div class="otp-container">
+                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)">
+                </div>
+
+                <div class="timer" id="timer">00:30</div>
+                
+                <button class="btn-primary" id="verify-otp-btn" onclick="verifyOTP()">Verify OTP</button>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="resend-btn" id="resend-otp" onclick="resendOTP()" disabled>Resend OTP</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <span style="color: #075E54; cursor: pointer;" onclick="backToPhone()">← Back to phone login</span>
+                </div>
+            </div>
+
+            <!-- Email Login Form -->
+            <div id="email-login" class="login-form">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="email-name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <button class="btn-primary" onclick="emailSignup()">Sign Up / Login</button>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <button class="btn-google" onclick="googleLogin()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="main-app">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <div class="avatar" id="user-avatar">NS</div>
+                        <div class="user-details">
+                            <h3 id="user-name">Loading...</h3>
+                            <p id="user-status">Online</p>
+                        </div>
+                    </div>
+                    <div class="header-icons">
+                        <i class="fas fa-circle" style="color: #4CAF50; font-size: 10px;"></i>
+                        <i class="fas fa-users"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                        <i class="fas fa-sign-out-alt logout-btn" onclick="logout()"></i>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-users" placeholder="Search users...">
+                    </div>
+                </div>
+
+                <div class="chats-tabs">
+                    <div class="tab active" onclick="switchMainTab('chats')">Chats</div>
+                    <div class="tab" onclick="switchMainTab('users')">Users</div>
+                </div>
+
+                <div id="chats-list"></div>
+                <div id="users-list" style="display: none;"></div>
+            </div>
+
+            <div class="chat-area">
+                <div class="chat-header" id="chat-header" style="display: none;">
+                    <div class="chat-user">
+                        <div class="avatar" id="chat-avatar">U</div>
+                        <div class="chat-user-info">
+                            <h3 id="chat-user-name">Select a chat</h3>
+                            <p id="chat-user-status">Tap to start messaging</p>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <i class="fas fa-search"></i>
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-video"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <div id="messages-container">
+                    <div class="welcome-screen">
+                        <i class="fab fa-whatsapp"></i>
+                        <h2>Welcome to NS CHAT</h2>
+                        <p>Select a user to start chatting</p>
+                    </div>
+                </div>
+
+                <div class="message-input-area" id="message-input-area" style="display: none;">
+                    <i class="fas fa-smile"></i>
+                    <i class="fas fa-paperclip"></i>
+                    <input type="text" id="message-input" placeholder="Type a message" onkeypress="handleTyping(event)">
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ==================== FIREBASE CONFIGURATION ====================
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD6PdODoYg_jhRfd9ZEZ72ftlvjZwAyxSg",
+  authDomain: "ns-chat-b0965.firebaseapp.com",
+  projectId: "ns-chat-b0965",
+  storageBucket: "ns-chat-b0965.firebasestorage.app",
+  messagingSenderId: "777022101127",
+  appId: "1:777022101127:web:a861ac69d3cbfeb3028a22",
+  measurementId: "G-LEF0GC4XRW"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Enable persistence
+        db.enablePersistence().catch(err => {
+            console.log('Persistence failed:', err);
+        });
+
+        // ==================== GLOBAL VARIABLES ====================
+        let currentUser = null;
+        let currentChatUser = null;
+        let currentChatId = null;
+        let messagesUnsubscribe = null;
+        let typingTimeout = null;
+        let otpTimer = 30;
+        let timerInterval = null;
+        let confirmationResult = null;
+
+        // ==================== DOM ELEMENTS ====================
+        const loginScreen = document.getElementById('login-screen');
+        const mainApp = document.getElementById('main-app');
+        const phoneLogin = document.getElementById('phone-login');
+        const otpVerification = document.getElementById('otp-verification');
+        const emailLogin = document.getElementById('email-login');
+        const chatsList = document.getElementById('chats-list');
+        const usersList = document.getElementById('users-list');
+        const messagesContainer = document.getElementById('messages-container');
+        const chatHeader = document.getElementById('chat-header');
+        const messageInputArea = document.getElementById('message-input-area');
+        const userName = document.getElementById('user-name');
+        const userAvatar = document.getElementById('user-avatar');
+
+        // ==================== AUTH STATE LISTENER ====================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is logged in
+                currentUser = user;
+                loginScreen.style.display = 'none';
+                mainApp.style.display = 'flex';
+                
+                // Save user to Firestore
+                await saveUserToFirestore(user);
+                
+                // Load user data
+                await loadUserData();
+                
+                // Load chats and users
+                loadChats();
+                loadUsers();
+                
+                // Update online status
+                updateOnlineStatus(true);
+            } else {
+                // User is logged out
+                currentUser = null;
+                loginScreen.style.display = 'block';
+                mainApp.style.display = 'none';
+                
+                // Clean up
+                if (messagesUnsubscribe) {
+                    messagesUnsubscribe();
+                }
+            }
+        });
+
+        // ==================== SAVE USER TO FIRESTORE ====================
+        async function saveUserToFirestore(user) {
+            const userRef = db.collection('users').doc(user.uid);
+            const doc = await userRef.get();
+            
+            if (!doc.exists) {
+                // Get name from input
+                const name = document.getElementById('name')?.value || 
+                            document.getElementById('email-name')?.value || 
+                            user.displayName || 
+                            'User';
+                
+                await userRef.set({
+                    uid: user.uid,
+                    name: name,
+                    email: user.email || '',
+                    phone: user.phoneNumber || '',
+                    avatar: name.charAt(0).toUpperCase(),
+                    status: 'Hey there! I am using NS CHAT',
+                    online: true,
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } else {
+                // Update online status
+                await userRef.update({
+                    online: true,
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+
+        // ==================== LOAD USER DATA ====================
+        async function loadUserData() {
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            if (doc.exists) {
+                const data = doc.data();
+                userName.textContent = data.name;
+                userAvatar.textContent = data.avatar || data.name.charAt(0).toUpperCase();
+            }
+        }
+
+        // ==================== UPDATE ONLINE STATUS ====================
+        function updateOnlineStatus(status) {
+            if (!currentUser) return;
+            
+            db.collection('users').doc(currentUser.uid).update({
+                online: status,
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        // Handle page close
+        window.addEventListener('beforeunload', () => {
+            if (currentUser) {
+                db.collection('users').doc(currentUser.uid).update({
+                    online: false,
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        });
+
+        // ==================== LOAD USERS ====================
+        function loadUsers() {
+            db.collection('users')
+                .where('uid', '!=', currentUser?.uid || '')
+                .onSnapshot((snapshot) => {
+                    usersList.innerHTML = '';
+                    
+                    snapshot.forEach((doc) => {
+                        const user = doc.data();
+                        const userElement = createUserElement(user);
+                        usersList.appendChild(userElement);
+                    });
+                });
+        }
+
+        function createUserElement(user) {
+            const div = document.createElement('div');
+            div.className = 'chat-item';
+            div.innerHTML = `
+                <div class="chat-avatar">
+                    ${user.avatar || user.name.charAt(0).toUpperCase()}
+                    ${user.online ? '<span class="online-badge"></span>' : ''}
+                </div>
+                <div class="chat-info">
+                    <div class="chat-name">${user.name}</div>
+                    <div class="chat-last-msg">${user.status || 'Hey there!'}</div>
+                </div>
+            `;
+            
+            div.onclick = () => startChat(user);
+            return div;
+        }
+
+        // ==================== LOAD CHATS ====================
+        function loadChats() {
+            if (!currentUser) return;
+            
+            db.collection('chats')
+                .where('participants', 'array-contains', currentUser.uid)
+                .orderBy('lastMessageTime', 'desc')
+                .onSnapshot((snapshot) => {
+                    chatsList.innerHTML = '';
+                    
+                    snapshot.forEach(async (doc) => {
+                        const chat = doc.data();
+                        const otherUserId = chat.participants.find(id => id !== currentUser.uid);
+                        const otherUser = await getUserData(otherUserId);
+                        
+                        if (otherUser) {
+                            const chatElement = createChatElement(chat, otherUser);
+                            chatsList.appendChild(chatElement);
+                        }
+                    });
+                });
+        }
+
+        async function getUserData(userId) {
+            const doc = await db.collection('users').doc(userId).get();
+            return doc.exists ? doc.data() : null;
+        }
+
+        function createChatElement(chat, user) {
+            const div = document.createElement('div');
+            div.className = `chat-item ${currentChatUser?.uid === user.uid ? 'active' : ''}`;
+            div.innerHTML = `
+                <div class="chat-avatar">
+                    ${user.avatar || user.name.charAt(0).toUpperCase()}
+                    ${user.online ? '<span class="online-badge"></span>' : ''}
+                </div>
+                <div class="chat-info">
+                    <div class="chat-name">${user.name}</div>
+                    <div class="chat-last-msg">
+                        <i class="fas fa-check${chat.lastMessageStatus === 'read' ? '-double' : ''}" style="color: #4CAF50;"></i>
+                        ${chat.lastMessage || 'No messages yet'}
+                    </div>
+                </div>
+                <div class="chat-time">
+                    ${chat.lastMessageTime ? formatTime(chat.lastMessageTime.toDate()) : ''}
+                </div>
+            `;
+            
+            div.onclick = () => openChat(user, chat);
+            return div;
+        }
+
+        // ==================== START/OPEN CHAT ====================
+        async function startChat(user) {
+            // Check if chat already exists
+            const chatsRef = db.collection('chats');
+            const snapshot = await chatsRef
+                .where('participants', 'array-contains', currentUser.uid)
+                .get();
+            
+            let existingChat = null;
+            
+            snapshot.forEach((doc) => {
+                const chat = doc.data();
+                if (chat.participants.includes(user.uid)) {
+                    existingChat = { id: doc.id, ...chat };
+                }
+            });
+            
+            if (existingChat) {
+                openChat(user, existingChat);
+            } else {
+                // Create new chat
+                const newChat = {
+                    participants: [currentUser.uid, user.uid],
+                    lastMessage: '',
+                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastMessageStatus: 'sent',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const doc = await chatsRef.add(newChat);
+                openChat(user, { id: doc.id, ...newChat });
+            }
+        }
+
+        function openChat(user, chat) {
+            currentChatUser = user;
+            currentChatId = chat.id;
+            
+            // Update UI
+            document.getElementById('chat-user-name').textContent = user.name;
+            document.getElementById('chat-avatar').textContent = user.avatar || user.name.charAt(0).toUpperCase();
+            document.getElementById('chat-user-status').textContent = user.online ? 'Online' : 'Offline';
+            
+            chatHeader.style.display = 'flex';
+            messageInputArea.style.display = 'flex';
+            
+            // Load messages
+            loadMessages(chat.id);
+            
+            // Update active chat in list
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        // ==================== LOAD MESSAGES ====================
+        function loadMessages(chatId) {
+            if (messagesUnsubscribe) {
+                messagesUnsubscribe();
+            }
+            
+            messagesUnsubscribe = db.collection('messages')
+                .where('chatId', '==', chatId)
+                .orderBy('timestamp', 'asc')
+                .onSnapshot((snapshot) => {
+                    messagesContainer.innerHTML = '';
+                    
+                    snapshot.forEach((doc) => {
+                        const message = doc.data();
+                        displayMessage(message);
+                    });
+                    
+                    // Scroll to bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Mark messages as read
+                    markMessagesAsRead(chatId);
+                });
+        }
+
+        function displayMessage(message) {
+            const div = document.createElement('div');
+            div.className = `message ${message.senderId === currentUser.uid ? 'sent' : 'received'}`;
+            
+            const time = message.timestamp ? message.timestamp.toDate() : new Date();
+            const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            div.innerHTML = `
+                <div>${message.text}</div>
+                <div class="message-time">
+                    ${timeStr}
+                    ${message.senderId === currentUser.uid ? 
+                        `<span class="message-status">
+                            <i class="fas fa-check-${message.status === 'read' ? 'double' : message.status === 'delivered' ? 'double' : ''}" 
+                               style="color: ${message.status === 'read' ? '#4CAF50' : '#999'};"></i>
+                        </span>` : ''}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(div);
+        }
+
+        function markMessagesAsRead(chatId) {
+            if (!currentUser) return;
+            
+            const messagesRef = db.collection('messages')
+                .where('chatId', '==', chatId)
+                .where('receiverId', '==', currentUser.uid)
+                .where('status', '!=', 'read');
+            
+            messagesRef.get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    doc.ref.update({ status: 'read' });
+                });
+            });
+        }
+
+        // ==================== SEND MESSAGE ====================
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            
+            if (!text || !currentChatUser || !currentChatId) return;
+            
+            const message = {
+                chatId: currentChatId,
+                senderId: currentUser.uid,
+                receiverId: currentChatUser.uid,
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                status: 'sent'
+            };
+            
+            await db.collection('messages').add(message);
+            
+            // Update chat's last message
+            await db.collection('chats').doc(currentChatId).update({
+                lastMessage: text,
+                lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                lastMessageStatus: 'sent'
+            });
+            
+            input.value = '';
+        }
+
+        // ==================== TYPING INDICATOR ====================
+        function handleTyping(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+                return;
+            }
+            
+            if (!currentChatUser || !currentChatId) return;
+            
+            const typingRef = db.collection('typing').doc(`${currentUser.uid}_${currentChatUser.uid}`);
+            
+            typingRef.set({
+                isTyping: true,
+                userId: currentUser.uid,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            if (typingTimeout) clearTimeout(typingTimeout);
+            
+            typingTimeout = setTimeout(() => {
+                typingRef.delete();
+            }, 2000);
+        }
+
+        // Listen for typing
+        function listenForTyping() {
+            if (!currentChatUser) return;
+            
+            db.collection('typing')
+                .where('userId', '==', currentChatUser.uid)
+                .onSnapshot((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        if (data.isTyping) {
+                            showTypingIndicator();
+                        }
+                    });
+                });
+        }
+
+        function showTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (!indicator) {
+                const div = document.createElement('div');
+                div.id = 'typing-indicator';
+                div.className = 'typing-indicator';
+                div.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                messagesContainer.appendChild(div);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            setTimeout(() => {
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+            }, 3000);
+        }
+
+        // ==================== PHONE AUTH ====================
+        async function sendOTP() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            if (!phone || phone.length !== 10) {
+                alert('Please enter a valid 10-digit Indian phone number');
+                return;
+            }
+            
+            const fullPhone = '+91' + phone;
+            document.getElementById('display-phone').textContent = fullPhone;
+            
+            try {
+                const appVerifier = new firebase.auth.RecaptchaVerifier('send-otp-btn', {
+                    size: 'invisible'
+                });
+                
+                confirmationResult = await auth.signInWithPhoneNumber(fullPhone, appVerifier);
+                
+                // Switch to OTP screen
+                phoneLogin.classList.remove('active');
+                otpVerification.classList.add('active');
+                
+                // Start timer
+                startOTPTimer();
+                
+            } catch (error) {
+                alert('Failed to send OTP: ' + error.message);
+            }
+        }
+
+        async function verifyOTP() {
+            const otp = getOTP();
+            
+            if (otp.length !== 6) {
+                alert('Please enter 6-digit OTP');
+                return;
+            }
+            
+            try {
+                const result = await confirmationResult.confirm(otp);
+                clearInterval(timerInterval);
+                
+            } catch (error) {
+                alert('Invalid OTP: ' + error.message);
+            }
+        }
+
+        function getOTP() {
+            return document.getElementById('otp1').value +
+                   document.getElementById('otp2').value +
+                   document.getElementById('otp3').value +
+                   document.getElementById('otp4').value +
+                   document.getElementById('otp5').value +
+                   document.getElementById('otp6').value;
+        }
+
+        function resendOTP() {
+            sendOTP();
+            otpTimer = 30;
+            startOTPTimer();
+        }
+
+        function startOTPTimer() {
+            const timerEl = document.getElementById('timer');
+            const resendBtn = document.getElementById('resend-otp');
+            
+            resendBtn.disabled = true;
+            otpTimer = 30;
+            
+            timerInterval = setInterval(() => {
+                otpTimer--;
+                const minutes = Math.floor(otpTimer / 60);
+                const seconds = otpTimer % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (otpTimer <= 0) {
+                    clearInterval(timerInterval);
+                    resendBtn.disabled = false;
+                    timerEl.textContent = '00:00';
+                }
+            }, 1000);
+        }
+
+        function backToPhone() {
+            otpVerification.classList.remove('active');
+            phoneLogin.classList.add('active');
+            clearInterval(timerInterval);
+            
+            // Clear OTP inputs
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`otp${i}`).value = '';
+            }
+        }
+
+        function moveToNext(input, nextId) {
+            if (input.value.length === 1 && nextId < 6) {
+                document.getElementById(`otp${nextId + 1}`).focus();
+            }
+        }
+
+        // ==================== GOOGLE AUTH ====================
+        async function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                alert('Google login failed: ' + error.message);
+            }
+        }
+
+        // ==================== EMAIL AUTH ====================
+        async function emailSignup() {
+            const name = document.getElementById('email-name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!name || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            try {
+                // Try to sign in
+                let userCredential;
+                try {
+                    userCredential = await auth.signInWithEmailAndPassword(email, password);
+                } catch (error) {
+                    // If user doesn't exist, create new
+                    if (error.code === 'auth/user-not-found') {
+                        userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    } else {
+                        throw error;
+                    }
+                }
+                
+            } catch (error) {
+                alert('Authentication failed: ' + error.message);
+            }
+        }
+
+        // ==================== LOGOUT ====================
+        async function logout() {
+            try {
+                await updateOnlineStatus(false);
+                await auth.signOut();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function formatTime(date) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            if (date >= today) {
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else {
+                return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'phone') {
+                document.querySelector('[onclick="switchTab(\'phone\')"]').classList.add('active');
+                document.getElementById('phone-login').classList.add('active');
+            } else {
+                document.querySelector('[onclick="switchTab(\'email\')"]').classList.add('active');
+                document.getElementById('email-login').classList.add('active');
+            }
+        }
+
+        function switchMainTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'chats') {
+                document.querySelector('[onclick="switchMainTab(\'chats\')"]').classList.add('active');
+                document.getElementById('chats-list').style.display = 'block';
+                document.getElementById('users-list').style.display = 'none';
+            } else {
+                document.querySelector('[onclick="switchMainTab(\'users\')"]').classList.add('active');
+                document.getElementById('users-list').style.display = 'block';
+                document.getElementById('chats-list').style.display = 'none';
+            }
+        }
+
+        // Search functionality
+        document.getElementById('search-users')?.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            
+            document.querySelectorAll('.chat-item').forEach(item => {
+                const name = item.querySelector('.chat-name')?.textContent.toLowerCase() || '';
+                item.style.display = name.includes(term) ? 'flex' : 'none';
+            });
+        });
+
+        // Initialize
+        console.log('NS CHAT is ready!');
+    </script>
+</body>
+</html
