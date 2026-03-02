@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NS CHAT - Real Firebase</title>
+    <title>NS CHAT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -59,25 +59,18 @@
         .login-header {
             background: var(--primary);
             color: white;
-            padding: 50px 20px;
+            padding: 40px 20px;
             text-align: center;
         }
 
         .login-header i {
-            font-size: 80px;
+            font-size: 70px;
             margin-bottom: 20px;
-            color: white;
         }
 
         .login-header h1 {
-            font-size: 36px;
+            font-size: 32px;
             margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .login-header p {
-            font-size: 16px;
-            opacity: 0.9;
         }
 
         .login-tabs {
@@ -94,7 +87,6 @@
             color: #667781;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
         }
 
         .login-tab.active {
@@ -301,6 +293,7 @@
             align-items: center;
             justify-content: space-between;
             height: 60px;
+            flex-shrink: 0;
         }
 
         .app-header h2 {
@@ -322,6 +315,7 @@
         .search-bar {
             padding: 12px;
             background: var(--bg-sidebar);
+            flex-shrink: 0;
         }
 
         .search-box {
@@ -430,9 +424,10 @@
             margin-left: 10px;
         }
 
-        /* Chat View */
+        /* ========== CHAT VIEW ========== */
         #chat-view {
             display: none;
+            width: 100%;
             height: 100vh;
             background: var(--bg-chat);
             flex-direction: column;
@@ -446,6 +441,7 @@
             align-items: center;
             gap: 15px;
             height: 60px;
+            flex-shrink: 0;
         }
 
         .back-btn {
@@ -525,12 +521,15 @@
             display: inline-block;
         }
 
+        /* Message Input Area - THIS WAS MISSING */
         .chat-input-area {
             background: var(--bg-sidebar);
             padding: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-color);
         }
 
         .chat-input-area input {
@@ -547,11 +546,19 @@
             outline: none;
         }
 
+        .chat-input-area input::placeholder {
+            color: var(--text-secondary);
+        }
+
         .chat-input-area i {
             color: var(--text-secondary);
             font-size: 24px;
             cursor: pointer;
             padding: 5px;
+        }
+
+        .chat-input-area i:hover {
+            color: var(--text-primary);
         }
 
         .send-btn {
@@ -566,6 +573,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .send-btn:hover {
@@ -589,6 +597,7 @@
             width: 100%;
             height: 60px;
             z-index: 100;
+            flex-shrink: 0;
         }
 
         .nav-item {
@@ -839,6 +848,24 @@
             color: var(--text-secondary);
             padding: 40px 20px;
         }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 40px 20px;
+        }
+
+        .welcome-screen i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -1056,13 +1083,13 @@
             </div>
         </div>
 
-        <!-- Chat View -->
+        <!-- Chat View (Separate) -->
         <div id="chat-view">
             <div class="chat-header">
                 <i class="fas fa-arrow-left back-btn" onclick="closeChat()"></i>
                 <div class="chat-header-info">
-                    <h3 id="chat-user-name">Loading...</h3>
-                    <p id="chat-user-status">...</p>
+                    <h3 id="chat-user-name">Saksham Sharma</h3>
+                    <p id="chat-user-status">Online</p>
                 </div>
                 <div class="chat-header-actions">
                     <i class="fas fa-phone"></i>
@@ -1071,8 +1098,15 @@
                 </div>
             </div>
 
-            <div id="chat-messages"></div>
+            <div id="chat-messages">
+                <div class="welcome-screen">
+                    <i class="fas fa-comments"></i>
+                    <h3>No messages yet</h3>
+                    <p>Say hello to start chatting!</p>
+                </div>
+            </div>
 
+            <!-- Message Input Area - NOW VISIBLE -->
             <div class="chat-input-area">
                 <i class="fas fa-smile"></i>
                 <i class="fas fa-paperclip"></i>
@@ -1134,6 +1168,7 @@
         let otpTimer = 30;
         let timerInterval = null;
         let confirmationResult = null;
+        let recaptchaVerifier = null;
         let currentEditField = '';
 
         // ==================== AUTH STATE ====================
@@ -1439,7 +1474,13 @@
                     messagesContainer.innerHTML = '';
                     
                     if (snapshot.empty) {
-                        messagesContainer.innerHTML = '<div style="text-align: center; color: #8696a0; padding: 20px;">No messages yet. Say hi!</div>';
+                        messagesContainer.innerHTML = `
+                            <div class="welcome-screen">
+                                <i class="fas fa-comments"></i>
+                                <h3>No messages yet</h3>
+                                <p>Say hello to start chatting!</p>
+                            </div>
+                        `;
                         return;
                     }
                     
@@ -1496,7 +1537,10 @@
             const input = document.getElementById('message-input');
             const text = input.value.trim();
             
-            if (!text || !currentChatUser || !currentChatId) return;
+            if (!text || !currentChatUser || !currentChatId) {
+                console.log('Cannot send message:', { text, currentChatUser, currentChatId });
+                return;
+            }
             
             try {
                 const message = {
@@ -1547,9 +1591,7 @@
             }, 2000);
         }
 
-        // ==================== PHONE AUTH (REAL) ====================
-        let recaptchaVerifier = null;
-
+        // ==================== PHONE AUTH ====================
         function sendOTP() {
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
@@ -1575,18 +1617,15 @@
             // Store name for later use
             sessionStorage.setItem('pendingName', name);
             
-            // Disable button to prevent multiple clicks
+            // Disable button
             const sendBtn = document.getElementById('send-otp-btn');
             sendBtn.disabled = true;
             sendBtn.textContent = 'Sending...';
             
-            // Create reCAPTCHA verifier
+            // Create reCAPTCHA
             if (!recaptchaVerifier) {
                 recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                    'size': 'invisible',
-                    'callback': (response) => {
-                        console.log('reCAPTCHA solved');
-                    }
+                    'size': 'invisible'
                 });
             }
             
@@ -1595,11 +1634,9 @@
                 .then((result) => {
                     confirmationResult = result;
                     
-                    // Switch to OTP screen
                     document.getElementById('phone-login').classList.remove('active');
                     document.getElementById('otp-verification').classList.add('active');
                     
-                    // Start timer
                     startOTPTimer();
                     
                     sendBtn.disabled = false;
@@ -1634,10 +1671,8 @@
             
             confirmationResult.confirm(otp)
                 .then((result) => {
-                    // Get name from session storage
                     const name = sessionStorage.getItem('pendingName') || 'User';
                     
-                    // Update user profile with name
                     if (result.user) {
                         result.user.updateProfile({
                             displayName: name
@@ -1666,12 +1701,6 @@
         }
 
         function resendOTP() {
-            if (!confirmationResult) {
-                showMessage('Please request OTP again', 'error');
-                return;
-            }
-            
-            // Re-send OTP using the same phone number
             const phoneNumber = document.getElementById('display-phone').textContent;
             
             auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
@@ -1723,14 +1752,13 @@
         }
 
         function handleOtpKeyPress(event) {
-            // Allow only numbers
             const charCode = event.which ? event.which : event.keyCode;
             if (charCode < 48 || charCode > 57) {
                 event.preventDefault();
             }
         }
 
-        // ==================== GOOGLE AUTH (REAL) ====================
+        // ==================== GOOGLE AUTH ====================
         async function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             
@@ -1743,7 +1771,7 @@
             }
         }
 
-        // ==================== EMAIL AUTH (REAL) ====================
+        // ==================== EMAIL AUTH ====================
         async function emailSignup() {
             const name = document.getElementById('email-name').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -1765,17 +1793,14 @@
             }
             
             try {
-                // Try to sign in
                 let userCredential;
                 try {
                     userCredential = await auth.signInWithEmailAndPassword(email, password);
                     showMessage('Login successful!', 'success');
                 } catch (error) {
                     if (error.code === 'auth/user-not-found') {
-                        // Create new user
                         userCredential = await auth.createUserWithEmailAndPassword(email, password);
                         
-                        // Update profile with name
                         await userCredential.user.updateProfile({
                             displayName: name
                         });
@@ -1929,7 +1954,7 @@
         });
 
         // Initialize
-        console.log('NS CHAT - Real Firebase Authentication Ready');
+        console.log('NS CHAT - Ready with message bar fixed');
     </script>
 </body>
 </html>
