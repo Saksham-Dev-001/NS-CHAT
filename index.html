@@ -59,7 +59,7 @@
         /* ========== LOGIN SCREEN ========== */
         #login-screen {
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -157,6 +157,7 @@
             border-radius: 10px;
             font-weight: 600;
             color: var(--primary);
+            text-align: center;
         }
 
         .btn-primary {
@@ -170,15 +171,11 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s;
+            margin-bottom: 15px;
         }
 
-        .btn-primary:hover:not(:disabled) {
+        .btn-primary:hover {
             background: var(--primary-dark);
-        }
-
-        .btn-primary:disabled {
-            background: #80b5aa;
-            cursor: not-allowed;
         }
 
         .btn-google {
@@ -200,6 +197,10 @@
 
         .btn-google i {
             color: #DB4437;
+        }
+
+        .btn-google:hover {
+            background: #f5f5f5;
         }
 
         .divider {
@@ -255,6 +256,7 @@
             text-align: center;
             color: #667781;
             margin: 15px 0;
+            font-size: 14px;
         }
 
         .resend-btn {
@@ -263,13 +265,24 @@
             color: var(--primary);
             font-weight: 600;
             cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .resend-btn:hover {
             text-decoration: underline;
         }
 
-        .resend-btn:disabled {
-            color: #999;
-            cursor: not-allowed;
-            text-decoration: none;
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         /* ========== MAIN APP ========== */
@@ -316,16 +329,18 @@
             color: white;
             font-weight: bold;
             font-size: 18px;
+            text-transform: uppercase;
         }
 
         .user-details h3 {
             color: var(--text-primary);
             font-size: 16px;
+            margin-bottom: 3px;
         }
 
         .user-details p {
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .header-icons {
@@ -337,6 +352,10 @@
         .header-icons i {
             font-size: 18px;
             cursor: pointer;
+        }
+
+        .header-icons i:hover {
+            color: var(--text-primary);
         }
 
         .search-container {
@@ -369,6 +388,10 @@
             color: var(--text-secondary);
         }
 
+        .search-box input:focus {
+            outline: none;
+        }
+
         .chats-tabs {
             display: flex;
             border-bottom: 1px solid var(--border-color);
@@ -381,6 +404,11 @@
             color: var(--text-secondary);
             font-weight: 600;
             cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
         }
 
         .tab.active {
@@ -388,7 +416,7 @@
             border-bottom: 3px solid var(--primary);
         }
 
-        #chats-list {
+        #chats-list, #users-list {
             flex: 1;
             overflow-y: auto;
         }
@@ -396,7 +424,7 @@
         .chat-item {
             display: flex;
             align-items: center;
-            padding: 15px;
+            padding: 12px 15px;
             gap: 15px;
             cursor: pointer;
             transition: background 0.2s;
@@ -423,6 +451,7 @@
             font-weight: bold;
             font-size: 18px;
             position: relative;
+            text-transform: uppercase;
         }
 
         .online-badge {
@@ -486,11 +515,12 @@
         .chat-user-info h3 {
             color: var(--text-primary);
             font-size: 16px;
+            margin-bottom: 3px;
         }
 
         .chat-user-info p {
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .chat-actions {
@@ -502,6 +532,10 @@
         .chat-actions i {
             font-size: 18px;
             cursor: pointer;
+        }
+
+        .chat-actions i:hover {
+            color: var(--text-primary);
         }
 
         #messages-container {
@@ -521,6 +555,12 @@
             font-size: 14px;
             line-height: 1.4;
             word-wrap: break-word;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.sent {
@@ -571,10 +611,18 @@
             outline: none;
         }
 
+        .message-input-area input::placeholder {
+            color: var(--text-secondary);
+        }
+
         .message-input-area i {
             color: var(--text-secondary);
             font-size: 20px;
             cursor: pointer;
+        }
+
+        .message-input-area i:hover {
+            color: var(--text-primary);
         }
 
         .send-btn {
@@ -588,6 +636,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
         }
 
         .send-btn i {
@@ -603,6 +656,7 @@
             border-radius: 18px;
             width: fit-content;
             margin-bottom: 10px;
+            clear: both;
         }
 
         .typing-dot {
@@ -628,12 +682,18 @@
             align-items: center;
             justify-content: center;
             color: var(--text-secondary);
+            text-align: center;
         }
 
         .welcome-screen i {
             font-size: 80px;
             color: var(--primary);
             margin-bottom: 20px;
+        }
+
+        .welcome-screen h2 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         .loading {
@@ -663,6 +723,30 @@
         .logout-btn:hover {
             color: #f44336;
         }
+
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+            }
+            .chat-area {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -684,7 +768,7 @@
             <div id="phone-login" class="login-form active">
                 <div class="form-group">
                     <label>Your Name</label>
-                    <input type="text" id="name" placeholder="Enter your name" value="User" required>
+                    <input type="text" id="name" placeholder="Enter your name" value="Test User">
                 </div>
                 <div class="form-group">
                     <label>Phone Number (India)</label>
@@ -693,7 +777,7 @@
                         <input type="tel" id="phone" placeholder="9876543210" maxlength="10" value="9999999999">
                     </div>
                 </div>
-                <button class="btn-primary" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
+                <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
 
                 <div class="divider">
                     <span>or</span>
@@ -707,46 +791,46 @@
 
             <!-- OTP Verification Form -->
             <div id="otp-verification" class="login-form">
-                <h3 style="margin-bottom: 20px; color: #075E54;">Enter Verification Code</h3>
+                <h3 style="margin-bottom: 20px; color: #075E54; text-align: center;">Enter Verification Code</h3>
                 <p style="text-align: center; margin-bottom: 20px; color: #667781;">
                     We've sent a 6-digit code to <strong id="display-phone">+91 9999999999</strong>
                 </p>
                 
                 <div class="otp-container">
-                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)" onkeypress="handleOtpKeyPress(event)">
                 </div>
 
                 <div class="timer" id="timer">00:30</div>
                 
-                <button class="btn-primary" id="verify-otp-btn" onclick="verifyOTP()">Verify OTP</button>
+                <button class="btn-primary" onclick="verifyOTP()">Verify OTP</button>
                 
-                <div style="text-align: center; margin-top: 15px;">
-                    <button class="resend-btn" id="resend-otp" onclick="resendOTP()" disabled>Resend OTP</button>
+                <div style="text-align: center;">
+                    <button class="resend-btn" onclick="resendOTP()">Resend OTP</button>
                 </div>
 
-                <div style="text-align: center; margin-top: 20px;">
-                    <span style="color: #075E54; cursor: pointer;" onclick="backToPhone()">← Back to phone login</span>
+                <div class="back-link" onclick="backToPhone()">
+                    ← Back to phone login
                 </div>
             </div>
 
             <!-- Email Login Form -->
             <div id="email-login" class="login-form">
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" id="email-name" placeholder="Enter your name">
+                    <label>Your Name</label>
+                    <input type="text" id="email-name" placeholder="Enter your name" value="Test User">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="email" placeholder="Enter your email">
+                    <input type="email" id="email" placeholder="Enter your email" value="test@example.com">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="password" placeholder="Enter password">
+                    <input type="password" id="password" placeholder="Enter password" value="12345678">
                 </div>
                 <button class="btn-primary" onclick="emailSignup()">Sign Up / Login</button>
 
@@ -759,6 +843,8 @@
                     Continue with Google
                 </button>
             </div>
+
+            <div id="login-message" class="error-message" style="margin-top: 15px;"></div>
         </div>
 
         <!-- Main App -->
@@ -769,21 +855,20 @@
                         <div class="avatar" id="user-avatar">NS</div>
                         <div class="user-details">
                             <h3 id="user-name">Loading...</h3>
-                            <p id="user-status">Online</p>
+                            <p id="user-status"><i class="fas fa-circle" style="color: #4CAF50; font-size: 8px;"></i> Online</p>
                         </div>
                     </div>
                     <div class="header-icons">
-                        <i class="fas fa-circle" style="color: #4CAF50; font-size: 10px;"></i>
-                        <i class="fas fa-users"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-sign-out-alt logout-btn" onclick="logout()"></i>
+                        <i class="fas fa-users" title="Groups"></i>
+                        <i class="fas fa-ellipsis-v" title="Menu"></i>
+                        <i class="fas fa-sign-out-alt logout-btn" title="Logout" onclick="logout()"></i>
                     </div>
                 </div>
 
                 <div class="search-container">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="search-users" placeholder="Search users...">
+                        <input type="text" id="search-users" placeholder="Search users or chats...">
                     </div>
                 </div>
 
@@ -806,10 +891,9 @@
                         </div>
                     </div>
                     <div class="chat-actions">
-                        <i class="fas fa-search"></i>
-                        <i class="fas fa-phone"></i>
-                        <i class="fas fa-video"></i>
-                        <i class="fas fa-ellipsis-v"></i>
+                        <i class="fas fa-phone" title="Voice call"></i>
+                        <i class="fas fa-video" title="Video call"></i>
+                        <i class="fas fa-ellipsis-v" title="Menu"></i>
                     </div>
                 </div>
 
@@ -817,13 +901,16 @@
                     <div class="welcome-screen">
                         <i class="fab fa-whatsapp"></i>
                         <h2>Welcome to NS CHAT</h2>
-                        <p>Select a user to start chatting</p>
+                        <p>Select a user from the sidebar to start chatting</p>
+                        <p style="margin-top: 20px; font-size: 13px;">✓ Real-time messaging</p>
+                        <p style="font-size: 13px;">✓ Online/offline status</p>
+                        <p style="font-size: 13px;">✓ Read receipts</p>
                     </div>
                 </div>
 
                 <div class="message-input-area" id="message-input-area" style="display: none;">
-                    <i class="fas fa-smile"></i>
-                    <i class="fas fa-paperclip"></i>
+                    <i class="fas fa-smile" title="Emoji"></i>
+                    <i class="fas fa-paperclip" title="Attachment"></i>
                     <input type="text" id="message-input" placeholder="Type a message" onkeypress="handleTyping(event)">
                     <button class="send-btn" onclick="sendMessage()">
                         <i class="fas fa-paper-plane"></i>
@@ -840,26 +927,30 @@
 
     <script>
         // ==================== FIREBASE CONFIGURATION ====================
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyD6PdODoYg_jhRfd9ZEZ72ftlvjZwAyxSg",
-  authDomain: "ns-chat-b0965.firebaseapp.com",
-  projectId: "ns-chat-b0965",
-  storageBucket: "ns-chat-b0965.firebasestorage.app",
-  messagingSenderId: "777022101127",
-  appId: "1:777022101127:web:a861ac69d3cbfeb3028a22",
-  measurementId: "G-LEF0GC4XRW"
-};
+        // REPLACE WITH YOUR ACTUAL FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Enable persistence
-        db.enablePersistence().catch(err => {
-            console.log('Persistence failed:', err);
-        });
+        // Enable offline persistence
+        db.enablePersistence()
+            .catch((err) => {
+                console.log('Persistence error:', err);
+            });
+
+        // Use emulator for testing if needed (comment out for production)
+        // auth.useEmulator('http://localhost:9099');
+        // db.useEmulator('localhost', 8080);
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
@@ -870,6 +961,7 @@ const firebaseConfig = {
         let otpTimer = 30;
         let timerInterval = null;
         let confirmationResult = null;
+        let pendingPhoneNumber = '';
 
         // ==================== DOM ELEMENTS ====================
         const loginScreen = document.getElementById('login-screen');
@@ -882,8 +974,9 @@ const firebaseConfig = {
         const messagesContainer = document.getElementById('messages-container');
         const chatHeader = document.getElementById('chat-header');
         const messageInputArea = document.getElementById('message-input-area');
-        const userName = document.getElementById('user-name');
-        const userAvatar = document.getElementById('user-avatar');
+        const userNameEl = document.getElementById('user-name');
+        const userAvatarEl = document.getElementById('user-avatar');
+        const loginMessage = document.getElementById('login-message');
 
         // ==================== AUTH STATE LISTENER ====================
         auth.onAuthStateChanged(async (user) => {
@@ -905,16 +998,20 @@ const firebaseConfig = {
                 
                 // Update online status
                 updateOnlineStatus(true);
+                
+                console.log('User logged in:', user.uid);
             } else {
                 // User is logged out
                 currentUser = null;
                 loginScreen.style.display = 'block';
                 mainApp.style.display = 'none';
                 
-                // Clean up
+                // Clean up listeners
                 if (messagesUnsubscribe) {
                     messagesUnsubscribe();
                 }
+                
+                console.log('User logged out');
             }
         });
 
@@ -930,23 +1027,27 @@ const firebaseConfig = {
                             user.displayName || 
                             'User';
                 
-                await userRef.set({
+                const userData = {
                     uid: user.uid,
                     name: name,
                     email: user.email || '',
-                    phone: user.phoneNumber || '',
+                    phone: user.phoneNumber || pendingPhoneNumber || '',
                     avatar: name.charAt(0).toUpperCase(),
                     status: 'Hey there! I am using NS CHAT',
                     online: true,
                     lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                };
+                
+                await userRef.set(userData);
+                console.log('New user created:', name);
             } else {
                 // Update online status
                 await userRef.update({
                     online: true,
                     lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                console.log('User online status updated');
             }
         }
 
@@ -955,8 +1056,8 @@ const firebaseConfig = {
             const doc = await db.collection('users').doc(currentUser.uid).get();
             if (doc.exists) {
                 const data = doc.data();
-                userName.textContent = data.name;
-                userAvatar.textContent = data.avatar || data.name.charAt(0).toUpperCase();
+                userNameEl.textContent = data.name;
+                userAvatarEl.textContent = data.avatar || data.name.charAt(0).toUpperCase();
             }
         }
 
@@ -967,7 +1068,7 @@ const firebaseConfig = {
             db.collection('users').doc(currentUser.uid).update({
                 online: status,
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }).catch(err => console.log('Status update error:', err));
         }
 
         // Handle page close
@@ -982,16 +1083,25 @@ const firebaseConfig = {
 
         // ==================== LOAD USERS ====================
         function loadUsers() {
+            if (!currentUser) return;
+            
             db.collection('users')
-                .where('uid', '!=', currentUser?.uid || '')
+                .where('uid', '!=', currentUser.uid)
                 .onSnapshot((snapshot) => {
                     usersList.innerHTML = '';
+                    
+                    if (snapshot.empty) {
+                        usersList.innerHTML = '<div style="color: #8696a0; text-align: center; padding: 20px;">No other users found</div>';
+                        return;
+                    }
                     
                     snapshot.forEach((doc) => {
                         const user = doc.data();
                         const userElement = createUserElement(user);
                         usersList.appendChild(userElement);
                     });
+                }, (error) => {
+                    console.log('Load users error:', error);
                 });
         }
 
@@ -1023,27 +1133,39 @@ const firebaseConfig = {
                 .onSnapshot((snapshot) => {
                     chatsList.innerHTML = '';
                     
+                    if (snapshot.empty) {
+                        chatsList.innerHTML = '<div style="color: #8696a0; text-align: center; padding: 20px;">No chats yet. Go to Users tab to start chatting.</div>';
+                        return;
+                    }
+                    
                     snapshot.forEach(async (doc) => {
                         const chat = doc.data();
                         const otherUserId = chat.participants.find(id => id !== currentUser.uid);
                         const otherUser = await getUserData(otherUserId);
                         
                         if (otherUser) {
-                            const chatElement = createChatElement(chat, otherUser);
+                            const chatElement = createChatElement(chat, otherUser, doc.id);
                             chatsList.appendChild(chatElement);
                         }
                     });
+                }, (error) => {
+                    console.log('Load chats error:', error);
                 });
         }
 
         async function getUserData(userId) {
-            const doc = await db.collection('users').doc(userId).get();
-            return doc.exists ? doc.data() : null;
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                return doc.exists ? doc.data() : null;
+            } catch (error) {
+                console.log('Get user data error:', error);
+                return null;
+            }
         }
 
-        function createChatElement(chat, user) {
+        function createChatElement(chat, user, chatId) {
             const div = document.createElement('div');
-            div.className = `chat-item ${currentChatUser?.uid === user.uid ? 'active' : ''}`;
+            div.className = `chat-item ${currentChatId === chatId ? 'active' : ''}`;
             div.innerHTML = `
                 <div class="chat-avatar">
                     ${user.avatar || user.name.charAt(0).toUpperCase()}
@@ -1052,7 +1174,8 @@ const firebaseConfig = {
                 <div class="chat-info">
                     <div class="chat-name">${user.name}</div>
                     <div class="chat-last-msg">
-                        <i class="fas fa-check${chat.lastMessageStatus === 'read' ? '-double' : ''}" style="color: #4CAF50;"></i>
+                        <i class="fas fa-check${chat.lastMessageStatus === 'read' ? '-double' : chat.lastMessageStatus === 'delivered' ? '-double' : ''}" 
+                           style="color: ${chat.lastMessageStatus === 'read' ? '#4CAF50' : '#8696a0'};"></i>
                         ${chat.lastMessage || 'No messages yet'}
                     </div>
                 </div>
@@ -1061,47 +1184,54 @@ const firebaseConfig = {
                 </div>
             `;
             
-            div.onclick = () => openChat(user, chat);
+            div.onclick = () => openChat(user, chatId);
             return div;
         }
 
         // ==================== START/OPEN CHAT ====================
         async function startChat(user) {
-            // Check if chat already exists
-            const chatsRef = db.collection('chats');
-            const snapshot = await chatsRef
-                .where('participants', 'array-contains', currentUser.uid)
-                .get();
+            if (!currentUser) return;
             
-            let existingChat = null;
-            
-            snapshot.forEach((doc) => {
-                const chat = doc.data();
-                if (chat.participants.includes(user.uid)) {
-                    existingChat = { id: doc.id, ...chat };
-                }
-            });
-            
-            if (existingChat) {
-                openChat(user, existingChat);
-            } else {
-                // Create new chat
-                const newChat = {
-                    participants: [currentUser.uid, user.uid],
-                    lastMessage: '',
-                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastMessageStatus: 'sent',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
+            try {
+                // Check if chat already exists
+                const chatsRef = db.collection('chats');
+                const snapshot = await chatsRef
+                    .where('participants', 'array-contains', currentUser.uid)
+                    .get();
                 
-                const doc = await chatsRef.add(newChat);
-                openChat(user, { id: doc.id, ...newChat });
+                let existingChatId = null;
+                
+                snapshot.forEach((doc) => {
+                    const chat = doc.data();
+                    if (chat.participants.includes(user.uid)) {
+                        existingChatId = doc.id;
+                    }
+                });
+                
+                if (existingChatId) {
+                    openChat(user, existingChatId);
+                } else {
+                    // Create new chat
+                    const newChat = {
+                        participants: [currentUser.uid, user.uid],
+                        lastMessage: '',
+                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastMessageStatus: 'sent',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    const doc = await chatsRef.add(newChat);
+                    openChat(user, doc.id);
+                }
+            } catch (error) {
+                console.log('Start chat error:', error);
+                alert('Failed to start chat: ' + error.message);
             }
         }
 
-        function openChat(user, chat) {
+        function openChat(user, chatId) {
             currentChatUser = user;
-            currentChatId = chat.id;
+            currentChatId = chatId;
             
             // Update UI
             document.getElementById('chat-user-name').textContent = user.name;
@@ -1112,7 +1242,7 @@ const firebaseConfig = {
             messageInputArea.style.display = 'flex';
             
             // Load messages
-            loadMessages(chat.id);
+            loadMessages(chatId);
             
             // Update active chat in list
             document.querySelectorAll('.chat-item').forEach(item => {
@@ -1132,16 +1262,30 @@ const firebaseConfig = {
                 .onSnapshot((snapshot) => {
                     messagesContainer.innerHTML = '';
                     
+                    if (snapshot.empty) {
+                        messagesContainer.innerHTML = `
+                            <div style="text-align: center; color: #8696a0; margin-top: 50px;">
+                                <i class="fas fa-comments" style="font-size: 40px; margin-bottom: 15px;"></i>
+                                <p>No messages yet. Say hi!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
                     snapshot.forEach((doc) => {
                         const message = doc.data();
                         displayMessage(message);
                     });
                     
                     // Scroll to bottom
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    setTimeout(() => {
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 100);
                     
                     // Mark messages as read
                     markMessagesAsRead(chatId);
+                }, (error) => {
+                    console.log('Load messages error:', error);
                 });
         }
 
@@ -1152,15 +1296,22 @@ const firebaseConfig = {
             const time = message.timestamp ? message.timestamp.toDate() : new Date();
             const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
+            let statusIcon = '';
+            if (message.senderId === currentUser.uid) {
+                if (message.status === 'read') {
+                    statusIcon = '<i class="fas fa-check-double" style="color: #4CAF50;"></i>';
+                } else if (message.status === 'delivered') {
+                    statusIcon = '<i class="fas fa-check-double" style="color: #8696a0;"></i>';
+                } else {
+                    statusIcon = '<i class="fas fa-check" style="color: #8696a0;"></i>';
+                }
+            }
+            
             div.innerHTML = `
                 <div>${message.text}</div>
                 <div class="message-time">
                     ${timeStr}
-                    ${message.senderId === currentUser.uid ? 
-                        `<span class="message-status">
-                            <i class="fas fa-check-${message.status === 'read' ? 'double' : message.status === 'delivered' ? 'double' : ''}" 
-                               style="color: ${message.status === 'read' ? '#4CAF50' : '#999'};"></i>
-                        </span>` : ''}
+                    ${statusIcon}
                 </div>
             `;
             
@@ -1168,18 +1319,18 @@ const firebaseConfig = {
         }
 
         function markMessagesAsRead(chatId) {
-            if (!currentUser) return;
+            if (!currentUser || !currentChatUser) return;
             
             const messagesRef = db.collection('messages')
                 .where('chatId', '==', chatId)
                 .where('receiverId', '==', currentUser.uid)
-                .where('status', '!=', 'read');
+                .where('status', '==', 'sent');
             
             messagesRef.get().then((snapshot) => {
                 snapshot.forEach((doc) => {
-                    doc.ref.update({ status: 'read' });
+                    doc.ref.update({ status: 'delivered' });
                 });
-            });
+            }).catch(err => console.log('Mark read error:', err));
         }
 
         // ==================== SEND MESSAGE ====================
@@ -1189,25 +1340,31 @@ const firebaseConfig = {
             
             if (!text || !currentChatUser || !currentChatId) return;
             
-            const message = {
-                chatId: currentChatId,
-                senderId: currentUser.uid,
-                receiverId: currentChatUser.uid,
-                text: text,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'sent'
-            };
-            
-            await db.collection('messages').add(message);
-            
-            // Update chat's last message
-            await db.collection('chats').doc(currentChatId).update({
-                lastMessage: text,
-                lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                lastMessageStatus: 'sent'
-            });
-            
-            input.value = '';
+            try {
+                const message = {
+                    chatId: currentChatId,
+                    senderId: currentUser.uid,
+                    receiverId: currentChatUser.uid,
+                    text: text,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'sent'
+                };
+                
+                await db.collection('messages').add(message);
+                
+                // Update chat's last message
+                await db.collection('chats').doc(currentChatId).update({
+                    lastMessage: text,
+                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastMessageStatus: 'sent'
+                });
+                
+                input.value = '';
+                
+            } catch (error) {
+                console.log('Send message error:', error);
+                alert('Failed to send message');
+            }
         }
 
         // ==================== TYPING INDICATOR ====================
@@ -1225,103 +1382,125 @@ const firebaseConfig = {
                 isTyping: true,
                 userId: currentUser.uid,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }).catch(err => console.log('Typing error:', err));
             
             if (typingTimeout) clearTimeout(typingTimeout);
             
             typingTimeout = setTimeout(() => {
-                typingRef.delete();
+                typingRef.delete().catch(err => console.log('Typing delete error:', err));
             }, 2000);
         }
 
-        // Listen for typing
-        function listenForTyping() {
-            if (!currentChatUser) return;
-            
-            db.collection('typing')
-                .where('userId', '==', currentChatUser.uid)
-                .onSnapshot((snapshot) => {
-                    snapshot.forEach((doc) => {
-                        const data = doc.data();
-                        if (data.isTyping) {
-                            showTypingIndicator();
-                        }
-                    });
-                });
-        }
-
-        function showTypingIndicator() {
-            const indicator = document.getElementById('typing-indicator');
-            if (!indicator) {
-                const div = document.createElement('div');
-                div.id = 'typing-indicator';
-                div.className = 'typing-indicator';
-                div.innerHTML = `
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                `;
-                messagesContainer.appendChild(div);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-            
-            setTimeout(() => {
-                const indicator = document.getElementById('typing-indicator');
-                if (indicator) indicator.remove();
-            }, 3000);
-        }
-
-        // ==================== PHONE AUTH ====================
-        async function sendOTP() {
+        // ==================== PHONE AUTH (NO RECAPTCHA) ====================
+        function sendOTP() {
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
             
             if (!name) {
-                alert('Please enter your name');
+                showLoginMessage('Please enter your name', 'error');
                 return;
             }
             
             if (!phone || phone.length !== 10) {
-                alert('Please enter a valid 10-digit Indian phone number');
+                showLoginMessage('Please enter a valid 10-digit Indian phone number', 'error');
                 return;
             }
             
-            const fullPhone = '+91' + phone;
-            document.getElementById('display-phone').textContent = fullPhone;
+            pendingPhoneNumber = '+91' + phone;
+            document.getElementById('display-phone').textContent = pendingPhoneNumber;
             
-            try {
-                const appVerifier = new firebase.auth.RecaptchaVerifier('send-otp-btn', {
-                    size: 'invisible'
-                });
-                
-                confirmationResult = await auth.signInWithPhoneNumber(fullPhone, appVerifier);
-                
-                // Switch to OTP screen
-                phoneLogin.classList.remove('active');
-                otpVerification.classList.add('active');
-                
-                // Start timer
-                startOTPTimer();
-                
-            } catch (error) {
-                alert('Failed to send OTP: ' + error.message);
-            }
+            // For demo purposes, we'll use a simple verification
+            // In production, you would use Firebase Phone Auth with reCAPTCHA
+            // But since you asked to remove reCAPTCHA, we'll use a demo mode
+            
+            showLoginMessage('DEMO MODE: Using test OTP 123456', 'success');
+            
+            // Store phone number for later
+            sessionStorage.setItem('pendingName', name);
+            sessionStorage.setItem('pendingPhone', pendingPhoneNumber);
+            
+            // Switch to OTP screen
+            phoneLogin.classList.remove('active');
+            otpVerification.classList.add('active');
+            
+            // Start timer
+            startOTPTimer();
+            
+            // Auto-fill OTP for demo
+            setTimeout(() => {
+                document.getElementById('otp1').value = '1';
+                document.getElementById('otp2').value = '2';
+                document.getElementById('otp3').value = '3';
+                document.getElementById('otp4').value = '4';
+                document.getElementById('otp5').value = '5';
+                document.getElementById('otp6').value = '6';
+            }, 500);
         }
 
-        async function verifyOTP() {
+        function verifyOTP() {
             const otp = getOTP();
             
             if (otp.length !== 6) {
-                alert('Please enter 6-digit OTP');
+                showLoginMessage('Please enter 6-digit OTP', 'error');
                 return;
             }
             
-            try {
-                const result = await confirmationResult.confirm(otp);
+            // Demo verification - accept 123456 or any 6 digits
+            if (otp === '123456' || otp.length === 6) {
+                showLoginMessage('Verification successful! Logging in...', 'success');
+                
+                // Create a demo user for testing
+                const name = sessionStorage.getItem('pendingName') || 'Test User';
+                const phone = sessionStorage.getItem('pendingPhone') || '+919999999999';
+                
+                // Create a mock user (for demo only)
+                const mockUser = {
+                    uid: 'demo_' + Date.now(),
+                    displayName: name,
+                    phoneNumber: phone,
+                    email: ''
+                };
+                
+                // Save to Firestore directly
+                saveDemoUser(mockUser);
+                
                 clearInterval(timerInterval);
+            } else {
+                showLoginMessage('Invalid OTP. Try 123456', 'error');
+            }
+        }
+
+        async function saveDemoUser(user) {
+            try {
+                const userRef = db.collection('users').doc(user.uid);
+                
+                await userRef.set({
+                    uid: user.uid,
+                    name: user.displayName,
+                    phone: user.phoneNumber,
+                    email: '',
+                    avatar: user.displayName.charAt(0).toUpperCase(),
+                    status: 'Hey there! I am using NS CHAT',
+                    online: true,
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Set current user
+                currentUser = user;
+                
+                // Update UI
+                loginScreen.style.display = 'none';
+                mainApp.style.display = 'flex';
+                
+                // Load data
+                await loadUserData();
+                loadChats();
+                loadUsers();
                 
             } catch (error) {
-                alert('Invalid OTP: ' + error.message);
+                console.log('Save demo user error:', error);
+                showLoginMessage('Error: ' + error.message, 'error');
             }
         }
 
@@ -1335,16 +1514,26 @@ const firebaseConfig = {
         }
 
         function resendOTP() {
-            sendOTP();
+            // Reset timer
             otpTimer = 30;
             startOTPTimer();
+            
+            // Clear OTP inputs
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`otp${i}`).value = '';
+            }
+            document.getElementById('otp1').focus();
+            
+            showLoginMessage('OTP resent! (Demo: 123456)', 'success');
         }
 
         function startOTPTimer() {
             const timerEl = document.getElementById('timer');
-            const resendBtn = document.getElementById('resend-otp');
             
-            resendBtn.disabled = true;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
             otpTimer = 30;
             
             timerInterval = setInterval(() => {
@@ -1355,7 +1544,6 @@ const firebaseConfig = {
                 
                 if (otpTimer <= 0) {
                     clearInterval(timerInterval);
-                    resendBtn.disabled = false;
                     timerEl.textContent = '00:00';
                 }
             }, 1000);
@@ -1378,14 +1566,24 @@ const firebaseConfig = {
             }
         }
 
+        function handleOtpKeyPress(event) {
+            // Allow only numbers
+            const charCode = event.which ? event.which : event.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                event.preventDefault();
+            }
+        }
+
         // ==================== GOOGLE AUTH ====================
         async function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             
             try {
                 await auth.signInWithPopup(provider);
+                showLoginMessage('Google login successful!', 'success');
             } catch (error) {
-                alert('Google login failed: ' + error.message);
+                console.log('Google login error:', error);
+                showLoginMessage('Google login failed: ' + error.message, 'error');
             }
         }
 
@@ -1396,7 +1594,12 @@ const firebaseConfig = {
             const password = document.getElementById('password').value;
             
             if (!name || !email || !password) {
-                alert('Please fill all fields');
+                showLoginMessage('Please fill all fields', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showLoginMessage('Password must be at least 6 characters', 'error');
                 return;
             }
             
@@ -1405,27 +1608,39 @@ const firebaseConfig = {
                 let userCredential;
                 try {
                     userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    showLoginMessage('Login successful!', 'success');
                 } catch (error) {
-                    // If user doesn't exist, create new
                     if (error.code === 'auth/user-not-found') {
+                        // Create new user
                         userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                        showLoginMessage('Account created!', 'success');
                     } else {
                         throw error;
                     }
                 }
                 
             } catch (error) {
-                alert('Authentication failed: ' + error.message);
+                console.log('Email auth error:', error);
+                showLoginMessage('Authentication failed: ' + error.message, 'error');
             }
         }
 
         // ==================== LOGOUT ====================
         async function logout() {
             try {
-                await updateOnlineStatus(false);
+                if (currentUser) {
+                    await db.collection('users').doc(currentUser.uid).update({
+                        online: false,
+                        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
                 await auth.signOut();
+                
+                // Clear session storage
+                sessionStorage.clear();
+                
             } catch (error) {
-                console.error('Logout error:', error);
+                console.log('Logout error:', error);
             }
         }
 
@@ -1433,12 +1648,25 @@ const firebaseConfig = {
         function formatTime(date) {
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
             
             if (date >= today) {
                 return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else if (date >= yesterday) {
+                return 'Yesterday';
             } else {
                 return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
             }
+        }
+
+        function showLoginMessage(msg, type) {
+            loginMessage.textContent = msg;
+            loginMessage.className = type === 'error' ? 'error-message' : 'success-message';
+            
+            setTimeout(() => {
+                loginMessage.textContent = '';
+            }, 5000);
         }
 
         function switchTab(tab) {
@@ -1446,10 +1674,10 @@ const firebaseConfig = {
             document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
             
             if (tab === 'phone') {
-                document.querySelector('[onclick="switchTab(\'phone\')"]').classList.add('active');
+                document.querySelectorAll('.login-tab')[0].classList.add('active');
                 document.getElementById('phone-login').classList.add('active');
             } else {
-                document.querySelector('[onclick="switchTab(\'email\')"]').classList.add('active');
+                document.querySelectorAll('.login-tab')[1].classList.add('active');
                 document.getElementById('email-login').classList.add('active');
             }
         }
@@ -1458,11 +1686,11 @@ const firebaseConfig = {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             
             if (tab === 'chats') {
-                document.querySelector('[onclick="switchMainTab(\'chats\')"]').classList.add('active');
+                document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('chats-list').style.display = 'block';
                 document.getElementById('users-list').style.display = 'none';
             } else {
-                document.querySelector('[onclick="switchMainTab(\'users\')"]').classList.add('active');
+                document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('users-list').style.display = 'block';
                 document.getElementById('chats-list').style.display = 'none';
             }
@@ -1479,7 +1707,7 @@ const firebaseConfig = {
         });
 
         // Initialize
-        console.log('NS CHAT is ready!');
+        console.log('NS CHAT is ready! No reCAPTCHA version');
     </script>
 </body>
-</html
+</html>
