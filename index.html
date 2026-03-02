@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NS CHAT - Real Time Messenger</title>
-    <!-- Font Awesome for icons -->
+    <title>NS CHAT - Reactions & More</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -31,6 +30,7 @@
             --success: #4CAF50;
             --warning: #ff9800;
             --info: #2196F3;
+            --request-bg: #2a3942;
         }
 
         body {
@@ -85,14 +85,8 @@
             animation: pulse 1.5s ease infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ========== TOAST NOTIFICATION ========== */
         #toast {
@@ -113,8 +107,8 @@
         }
 
         @keyframes slideUpToast {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(20px); opacity:0; }
+            to { transform: translateY(0); opacity:1; }
         }
 
         .toast-success { background: linear-gradient(135deg, var(--success), #45a049); }
@@ -150,10 +144,7 @@
             animation: rotate 20s linear infinite;
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .login-header i {
             font-size: 90px;
@@ -162,10 +153,7 @@
             animation: float 3s ease infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         .login-header h1 {
             font-size: 40px;
@@ -174,10 +162,7 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .login-header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
+        .login-header p { font-size: 16px; opacity: 0.9; }
 
         .login-tabs {
             display: flex;
@@ -199,10 +184,7 @@
             position: relative;
         }
 
-        .login-tab.active {
-            color: var(--primary);
-        }
-
+        .login-tab.active { color: var(--primary); }
         .login-tab.active::after {
             content: '';
             position: absolute;
@@ -214,15 +196,8 @@
             animation: slideIn 0.3s ease;
         }
 
-        .login-form {
-            padding: 30px 20px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
+        .login-form { padding: 30px 20px; animation: fadeIn 0.5s ease; }
+        .form-group { margin-bottom: 25px; }
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -249,11 +224,7 @@
             transform: scale(1.02);
         }
 
-        .phone-input {
-            display: flex;
-            gap: 10px;
-        }
-
+        .phone-input { display: flex; gap: 10px; }
         .country-code {
             width: 80px;
             padding: 16px;
@@ -293,19 +264,13 @@
             transition: left 0.5s;
         }
 
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
+        .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(7,94,84,0.4);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
+        .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled {
             background: #80b5aa;
             cursor: not-allowed;
@@ -337,10 +302,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        .btn-google i {
-            color: #DB4437;
-            font-size: 20px;
-        }
+        .btn-google i { color: #DB4437; font-size: 20px; }
 
         .divider {
             text-align: center;
@@ -348,8 +310,7 @@
             margin: 25px 0;
         }
 
-        .divider::before,
-        .divider::after {
+        .divider::before, .divider::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -360,7 +321,6 @@
 
         .divider::before { left: 0; }
         .divider::after { right: 0; }
-
         .divider span {
             background: white;
             padding: 0 15px;
@@ -378,10 +338,7 @@
             animation: slideInRight 0.3s ease;
         }
 
-        @keyframes slideInRight {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
+        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
         .otp-header {
             text-align: center;
@@ -413,10 +370,7 @@
             font-weight: 600;
         }
 
-        .otp-header p {
-            color: #666;
-            font-size: 14px;
-        }
+        .otp-header p { color: #666; font-size: 14px; }
 
         .otp-container {
             display: flex;
@@ -496,16 +450,8 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        .app-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 20px;
-        }
-
+        .app-header h2 { font-size: 20px; font-weight: 600; }
+        .header-icons { display: flex; gap: 20px; }
         .header-icons i {
             font-size: 20px;
             cursor: pointer;
@@ -535,15 +481,8 @@
             transition: all 0.3s;
         }
 
-        .search-box:focus-within {
-            box-shadow: 0 0 0 3px rgba(7,94,84,0.3);
-        }
-
-        .search-box i {
-            color: var(--text-secondary);
-            font-size: 16px;
-        }
-
+        .search-box:focus-within { box-shadow: 0 0 0 3px rgba(7,94,84,0.3); }
+        .search-box i { color: var(--text-secondary); font-size: 16px; }
         .search-box input {
             background: none;
             border: none;
@@ -551,14 +490,8 @@
             width: 100%;
             font-size: 15px;
         }
-
-        .search-box input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .search-box input:focus {
-            outline: none;
-        }
+        .search-box input::placeholder { color: var(--text-secondary); }
+        .search-box input:focus { outline: none; }
 
         .content-area {
             flex: 1;
@@ -569,14 +502,8 @@
             scrollbar-color: var(--primary) var(--bg-sidebar);
         }
 
-        .content-area::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .content-area::-webkit-scrollbar-track {
-            background: var(--bg-sidebar);
-        }
-
+        .content-area::-webkit-scrollbar { width: 5px; }
+        .content-area::-webkit-scrollbar-track { background: var(--bg-sidebar); }
         .content-area::-webkit-scrollbar-thumb {
             background: var(--primary);
             border-radius: 5px;
@@ -621,9 +548,7 @@
             transition: all 0.3s;
         }
 
-        .chat-item:hover .chat-avatar {
-            transform: scale(1.05);
-        }
+        .chat-item:hover .chat-avatar { transform: scale(1.05); }
 
         .online-badge {
             position: absolute;
@@ -637,11 +562,7 @@
             animation: pulse 2s infinite;
         }
 
-        .chat-info {
-            flex: 1;
-            min-width: 0;
-        }
-
+        .chat-info { flex: 1; min-width: 0; }
         .chat-name {
             color: var(--text-primary);
             font-weight: 600;
@@ -681,10 +602,7 @@
         }
 
         /* ========== PROFILE VIEW ========== */
-        .profile-view {
-            padding: 20px;
-        }
-
+        .profile-view { padding: 20px; }
         .profile-header-section {
             text-align: center;
             margin-bottom: 30px;
@@ -756,10 +674,7 @@
         }
 
         /* ========== SETTINGS VIEW ========== */
-        .settings-section {
-            margin-bottom: 25px;
-        }
-
+        .settings-section { margin-bottom: 25px; }
         .settings-title {
             padding: 15px 20px 5px;
             color: var(--text-secondary);
@@ -792,10 +707,7 @@
             transition: all 0.3s;
         }
 
-        .settings-item:hover i {
-            transform: scale(1.2);
-        }
-
+        .settings-item:hover i { transform: scale(1.2); }
         .settings-item span {
             color: var(--text-primary);
             flex: 1;
@@ -834,10 +746,7 @@
             position: relative;
         }
 
-        .nav-item.active {
-            color: var(--primary);
-        }
-
+        .nav-item.active { color: var(--primary); }
         .nav-item.active::after {
             content: '';
             position: absolute;
@@ -851,10 +760,7 @@
             animation: slideDown 0.3s ease;
         }
 
-        @keyframes slideDown {
-            from { width: 0; opacity: 0; }
-            to { width: 40px; opacity: 1; }
-        }
+        @keyframes slideDown { from { width:0; opacity:0; } to { width:40px; opacity:1; } }
 
         .nav-item i {
             font-size: 22px;
@@ -863,13 +769,8 @@
             transition: all 0.3s;
         }
 
-        .nav-item:hover i {
-            transform: translateY(-3px);
-        }
-
-        .nav-item span {
-            font-size: 11px;
-        }
+        .nav-item:hover i { transform: translateY(-3px); }
+        .nav-item span { font-size: 11px; }
 
         /* ========== CHAT VIEW ========== */
         #chat-view {
@@ -918,10 +819,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .chat-user-info {
-            flex: 1;
-        }
-
+        .chat-user-info { flex: 1; }
         .chat-user-info h3 {
             font-size: 17px;
             margin-bottom: 3px;
@@ -936,11 +834,7 @@
             gap: 3px;
         }
 
-        .chat-header-actions {
-            display: flex;
-            gap: 15px;
-        }
-
+        .chat-header-actions { display: flex; gap: 15px; }
         .chat-header-actions i {
             font-size: 20px;
             cursor: pointer;
@@ -977,8 +871,8 @@
         }
 
         @keyframes messageIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity:0; transform: translateY(10px); }
+            to { opacity:1; transform: translateY(0); }
         }
 
         .message.sent {
@@ -995,6 +889,12 @@
             border-bottom-left-radius: 4px;
         }
 
+        .message.deleted {
+            background: #3a4a54;
+            color: #aaa;
+            font-style: italic;
+        }
+
         .message-time {
             font-size: 10px;
             color: rgba(255,255,255,0.6);
@@ -1006,6 +906,76 @@
             font-size: 12px;
             margin-left: 5px;
             display: inline-block;
+        }
+
+        .message-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .message-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Reaction badges */
+        .message-reactions {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .reaction-badge {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 2px 6px;
+            font-size: 12px;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            backdrop-filter: blur(2px);
+            cursor: pointer;
+        }
+        .reaction-badge span {
+            margin-left: 2px;
+            font-size: 10px;
+        }
+
+        /* Reaction menu */
+        .reaction-menu {
+            position: fixed;
+            background: var(--bg-sidebar);
+            border-radius: 30px;
+            padding: 8px 12px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.2s ease;
+        }
+        .reaction-menu button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 0;
+            line-height: 1;
+        }
+        .reaction-menu button:hover {
+            transform: scale(1.3);
+        }
+        .reaction-menu .delete-btn {
+            color: var(--danger);
+            font-size: 20px;
+            margin-left: 8px;
+            padding-left: 8px;
+            border-left: 1px solid var(--border-color);
         }
 
         .chat-input-area {
@@ -1072,9 +1042,7 @@
             box-shadow: 0 8px 20px rgba(7,94,84,0.4);
         }
 
-        .send-btn:active {
-            transform: scale(0.95);
-        }
+        .send-btn:active { transform: scale(0.95); }
 
         .typing-indicator {
             display: flex;
@@ -1097,13 +1065,63 @@
             animation: typingBounce 1.4s infinite;
         }
 
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .typing-dot:nth-child(2) { animation-delay:0.2s; }
+        .typing-dot:nth-child(3) { animation-delay:0.4s; }
 
         @keyframes typingBounce {
-            0%, 60%, 100% { transform: translateY(0); }
+            0%,60%,100% { transform: translateY(0); }
             30% { transform: translateY(-8px); }
         }
+
+        /* ========== FRIEND REQUESTS SECTION ========== */
+        .request-section {
+            padding: 10px 16px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .request-title {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .request-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            gap: 15px;
+        }
+
+        .request-actions { display: flex; gap: 10px; margin-left: auto; }
+        .request-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .request-btn.accept { background: var(--success); color: white; }
+        .request-btn.reject { background: var(--danger); color: white; }
+        .request-btn.pending { background: var(--text-secondary); color: white; cursor: default; }
+        .request-btn:hover:not(:disabled) { transform: scale(1.05); }
+
+        .friend-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: var(--request-bg);
+            color: var(--text-secondary);
+            margin-left: 10px;
+        }
+
+        .friend-status.friend { background: var(--primary); color: white; }
+        .friend-status.pending { background: var(--warning); color: white; }
 
         /* ========== MODAL ========== */
         .modal {
@@ -1121,9 +1139,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: var(--bg-sidebar);
@@ -1135,10 +1151,7 @@
             border: 1px solid var(--border-color);
         }
 
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes scaleIn { from { transform:scale(0.9); opacity:0; } to { transform:scale(1); opacity:1; } }
 
         .modal-content h3 {
             color: var(--text-primary);
@@ -1165,11 +1178,7 @@
             background: #3a4a54;
         }
 
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
+        .modal-buttons { display: flex; gap: 10px; }
         .modal-buttons button {
             flex: 1;
             padding: 14px;
@@ -1196,11 +1205,49 @@
             color: var(--text-primary);
         }
 
-        .modal-buttons .cancel:hover {
-            background: #3a4a54;
+        .modal-buttons .cancel:hover { background: #3a4a54; }
+
+        /* ========== IMAGE VIEWER ========== */
+        .image-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
-        /* ========== NO DATA ========== */
+        .image-viewer.active { display: flex; }
+        .image-viewer img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: scaleIn 0.3s ease;
+        }
+        .image-viewer .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        .image-viewer .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        /* ========== NO DATA & SKELETON ========== */
         .no-data {
             text-align: center;
             color: var(--text-secondary);
@@ -1216,12 +1263,20 @@
             animation: float 3s ease infinite;
         }
 
-        /* ========== UTILITY CLASSES ========== */
+        .skeleton {
+            background: linear-gradient(90deg, #2a3942 25%, #3a4a54 50%, #2a3942 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+            height: 20px;
+            margin: 5px 0;
+        }
+
+        @keyframes loading { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
+
+        /* ========== UTILITY ========== */
         .hidden { display: none !important; }
         .flex { display: flex !important; }
-        .text-center { text-align: center; }
-        .mt-20 { margin-top: 20px; }
-        .mb-20 { margin-bottom: 20px; }
         #email-login { display: none; }
     </style>
 </head>
@@ -1330,11 +1385,11 @@
             </div>
 
             <div class="timer" id="timer">00:30</div>
-            
+
             <button class="btn-primary" id="verify-otp-btn">
                 <i class="fas fa-check-circle"></i> Verify OTP
             </button>
-            
+
             <div style="text-align: center;">
                 <button class="resend-btn" id="resend-otp-btn" disabled>
                     <i class="fas fa-redo-alt"></i> Resend OTP
@@ -1360,9 +1415,19 @@
             </div>
 
             <div class="content-area" id="content-area">
+                <!-- Chats View -->
                 <div id="chats-view"></div>
-                <div id="users-view" style="display: none;"></div>
 
+                <!-- Users View (with requests) -->
+                <div id="users-view" style="display: none;">
+                    <div id="incoming-requests" class="request-section" style="display: none;">
+                        <div class="request-title">📨 Friend Requests</div>
+                        <div id="requests-list"></div>
+                    </div>
+                    <div id="all-users-list"></div>
+                </div>
+
+                <!-- Profile View -->
                 <div id="profile-view" style="display: none;">
                     <div class="profile-view">
                         <div class="profile-header-section">
@@ -1390,6 +1455,7 @@
                     </div>
                 </div>
 
+                <!-- Settings View -->
                 <div id="settings-view" style="display: none;">
                     <div class="settings-section">
                         <div class="settings-title">Account</div>
@@ -1462,12 +1528,21 @@
 
             <div class="chat-input-area">
                 <i class="fas fa-smile"></i>
-                <i class="fas fa-paperclip"></i>
+                <i class="fas fa-paperclip" id="attach-btn"></i>
                 <input type="text" id="message-input" placeholder="Type a message">
                 <button class="send-btn" id="send-message-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
+        </div>
+
+        <!-- Hidden file input for image upload -->
+        <input type="file" id="file-input" style="display: none;" accept="image/*">
+
+        <!-- Image Viewer Modal -->
+        <div class="image-viewer" id="image-viewer">
+            <i class="fas fa-times close-btn" id="close-image-viewer"></i>
+            <img id="viewer-image" src="" alt="Preview">
         </div>
     </div>
 
@@ -1483,10 +1558,22 @@
         </div>
     </div>
 
+    <!-- Reaction Menu (floating) -->
+    <div id="reaction-menu" class="reaction-menu" style="display: none;">
+        <button class="reaction-emoji" data-emoji="👍">👍</button>
+        <button class="reaction-emoji" data-emoji="❤️">❤️</button>
+        <button class="reaction-emoji" data-emoji="😂">😂</button>
+        <button class="reaction-emoji" data-emoji="😮">😮</button>
+        <button class="reaction-emoji" data-emoji="😢">😢</button>
+        <button class="reaction-emoji" data-emoji="😡">😡</button>
+        <button class="delete-btn" id="reaction-delete"><i class="fas fa-trash"></i></button>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <script>
         // ==================== FIREBASE CONFIG ====================
@@ -1500,17 +1587,12 @@
             measurementId: "G-LEF0GC4XRW"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
-        // Enable offline persistence
-        db.enablePersistence().catch(err => {
-            console.log('Persistence error:', err);
-        });
-
-        console.log('✅ Firebase Connected Successfully!');
+        db.enablePersistence().catch(err => console.log('Persistence error:', err));
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
@@ -1524,6 +1606,8 @@
         let confirmationResult = null;
         let recaptchaVerifier = null;
         let currentEditField = '';
+        let selectedFile = null;
+        let activeMessageForReaction = null; // { messageId, element, x, y }
 
         // Toast function
         function showToast(message, type = 'info', duration = 3000) {
@@ -1531,13 +1615,9 @@
             toast.textContent = message;
             toast.className = `toast-${type}`;
             toast.style.display = 'block';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, duration);
+            setTimeout(() => { toast.style.display = 'none'; }, duration);
         }
 
-        // Show loading
         function showLoading(show) {
             document.getElementById('loading-screen').style.display = show ? 'flex' : 'none';
         }
@@ -1548,13 +1628,11 @@
                 console.log('✅ User logged in:', user.uid);
                 showLoading(true);
                 currentUser = user;
-                
                 await saveUserToFirestore(user);
                 await loadUserData();
                 loadChats();
-                loadUsers();
+                loadUsersAndRequests();
                 updateOnlineStatus(true);
-                
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('otp-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'flex';
@@ -1567,22 +1645,16 @@
                 document.getElementById('main-app').style.display = 'none';
                 document.getElementById('chat-view').style.display = 'none';
                 document.getElementById('otp-screen').style.display = 'none';
-                
                 if (messagesUnsubscribe) messagesUnsubscribe();
             }
         });
 
-        // ==================== SAVE USER TO FIRESTORE ====================
+        // ==================== SAVE USER ====================
         async function saveUserToFirestore(user) {
             const userRef = db.collection('users').doc(user.uid);
             const doc = await userRef.get();
-            
             if (!doc.exists) {
-                let name = user.displayName || 
-                          sessionStorage.getItem('pendingName') || 
-                          user.email?.split('@')[0] || 
-                          'User';
-                
+                let name = user.displayName || sessionStorage.getItem('pendingName') || user.email?.split('@')[0] || 'User';
                 const userData = {
                     uid: user.uid,
                     name: name,
@@ -1592,9 +1664,9 @@
                     status: 'Hey there! I am using NS CHAT',
                     online: true,
                     lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    friends: []
                 };
-                
                 await userRef.set(userData);
                 currentUserData = userData;
                 updateProfileUI(userData);
@@ -1607,7 +1679,6 @@
         // ==================== UPDATE PROFILE UI ====================
         function updateProfileUI(data) {
             if (!data) return;
-            
             document.getElementById('profile-name').textContent = data.name || 'User';
             document.getElementById('profile-avatar').textContent = data.avatar || (data.name ? data.name.charAt(0).toUpperCase() : '👤');
             document.getElementById('profile-status').textContent = data.status || 'Hey there! I am using NS CHAT';
@@ -1617,10 +1688,8 @@
             document.getElementById('settings-status').textContent = data.status || 'Hey there! I am using NS CHAT';
         }
 
-        // ==================== LOAD USER DATA ====================
         async function loadUserData() {
             if (!currentUser) return;
-            
             const doc = await db.collection('users').doc(currentUser.uid).get();
             if (doc.exists) {
                 currentUserData = doc.data();
@@ -1628,7 +1697,6 @@
             }
         }
 
-        // ==================== UPDATE ONLINE STATUS ====================
         function updateOnlineStatus(status) {
             if (!currentUser) return;
             db.collection('users').doc(currentUser.uid).update({
@@ -1646,66 +1714,166 @@
             }
         });
 
-        // ==================== LOAD USERS ====================
-        function loadUsers() {
+        // ==================== LOAD USERS AND REQUESTS ====================
+        function loadUsersAndRequests() {
             if (!currentUser) return;
-            
+
             db.collection('users')
                 .where('uid', '!=', currentUser.uid)
                 .onSnapshot((snapshot) => {
-                    const usersList = document.getElementById('users-view');
-                    usersList.innerHTML = '';
-                    
-                    if (snapshot.empty) {
-                        usersList.innerHTML = '<div class="no-data"><i class="fas fa-users"></i><p>No other users found</p></div>';
-                        return;
-                    }
-                    
-                    snapshot.forEach((doc) => {
-                        const user = doc.data();
-                        usersList.appendChild(createUserItem(user));
+                    const users = [];
+                    snapshot.forEach(doc => users.push(doc.data()));
+                    renderUsers(users);
+                });
+
+            db.collection('friendRequests')
+                .where('to', '==', currentUser.uid)
+                .where('status', '==', 'pending')
+                .onSnapshot((snapshot) => {
+                    const requests = [];
+                    snapshot.forEach(doc => {
+                        requests.push({ id: doc.id, ...doc.data() });
                     });
+                    renderIncomingRequests(requests);
                 });
         }
 
-        function createUserItem(user) {
-            const div = document.createElement('div');
-            div.className = 'chat-item';
-            div.innerHTML = `
-                <div class="chat-avatar">
-                    ${user.avatar || (user.name ? user.name.charAt(0).toUpperCase() : '👤')}
-                    ${user.online ? '<span class="online-badge"></span>' : ''}
-                </div>
-                <div class="chat-info">
-                    <div class="chat-name">${user.name || 'User'}</div>
-                    <div class="chat-last-msg">${user.status || 'Hey there!'}</div>
-                </div>
-            `;
-            div.onclick = () => startChat(user);
-            return div;
+        async function renderUsers(users) {
+            const container = document.getElementById('all-users-list');
+            container.innerHTML = '';
+
+            const userDoc = await db.collection('users').doc(currentUser.uid).get();
+            const friends = userDoc.data()?.friends || [];
+
+            const sentRequestsSnapshot = await db.collection('friendRequests')
+                .where('from', '==', currentUser.uid)
+                .where('status', '==', 'pending')
+                .get();
+            const sentRequests = new Set();
+            sentRequestsSnapshot.forEach(doc => sentRequests.add(doc.data().to));
+
+            for (let user of users) {
+                const div = document.createElement('div');
+                div.className = 'chat-item';
+                div.innerHTML = `
+                    <div class="chat-avatar">
+                        ${user.avatar || user.name.charAt(0).toUpperCase()}
+                        ${user.online ? '<span class="online-badge"></span>' : ''}
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">${user.name}</div>
+                        <div class="chat-last-msg">${user.status || 'Hey there!'}</div>
+                    </div>
+                    <div class="friend-status ${friends.includes(user.uid) ? 'friend' : (sentRequests.has(user.uid) ? 'pending' : '')}">
+                        ${friends.includes(user.uid) ? 'Friends' : (sentRequests.has(user.uid) ? 'Request Sent' : '')}
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    if (friends.includes(user.uid)) {
+                        startChat(user);
+                    } else {
+                        if (!sentRequests.has(user.uid)) {
+                            if (confirm(`Send friend request to ${user.name}?`)) {
+                                sendFriendRequest(user.uid);
+                            }
+                        } else {
+                            showToast('Request already sent', 'info');
+                        }
+                    }
+                });
+                container.appendChild(div);
+            }
+        }
+
+        function renderIncomingRequests(requests) {
+            const container = document.getElementById('incoming-requests');
+            const list = document.getElementById('requests-list');
+            if (requests.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'block';
+            list.innerHTML = '';
+            requests.forEach(async (req) => {
+                const userDoc = await db.collection('users').doc(req.from).get();
+                const user = userDoc.data();
+                const div = document.createElement('div');
+                div.className = 'request-item';
+                div.innerHTML = `
+                    <div class="chat-avatar" style="width:40px;height:40px;font-size:16px;">
+                        ${user?.avatar || user?.name?.charAt(0) || '?'}
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">${user?.name || 'Unknown'}</div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="request-btn accept" data-id="${req.id}" data-from="${req.from}">Accept</button>
+                        <button class="request-btn reject" data-id="${req.id}">Reject</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            list.querySelectorAll('.accept').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    acceptFriendRequest(btn.dataset.id, btn.dataset.from);
+                });
+            });
+            list.querySelectorAll('.reject').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    rejectFriendRequest(btn.dataset.id);
+                });
+            });
+        }
+
+        async function sendFriendRequest(toUid) {
+            await db.collection('friendRequests').add({
+                from: currentUser.uid,
+                to: toUid,
+                status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast('Friend request sent', 'success');
+        }
+
+        async function acceptFriendRequest(requestId, fromUid) {
+            const batch = db.batch();
+            const requestRef = db.collection('friendRequests').doc(requestId);
+            batch.update(requestRef, { status: 'accepted' });
+
+            const userRef = db.collection('users').doc(currentUser.uid);
+            const otherRef = db.collection('users').doc(fromUid);
+            batch.update(userRef, { friends: firebase.firestore.FieldValue.arrayUnion(fromUid) });
+            batch.update(otherRef, { friends: firebase.firestore.FieldValue.arrayUnion(currentUser.uid) });
+
+            await batch.commit();
+            showToast('Friend request accepted', 'success');
+        }
+
+        async function rejectFriendRequest(requestId) {
+            await db.collection('friendRequests').doc(requestId).update({ status: 'rejected' });
+            showToast('Friend request rejected', 'info');
         }
 
         // ==================== LOAD CHATS ====================
         function loadChats() {
             if (!currentUser) return;
-            
             db.collection('chats')
                 .where('participants', 'array-contains', currentUser.uid)
                 .orderBy('lastMessageTime', 'desc')
                 .onSnapshot(async (snapshot) => {
                     const chatsList = document.getElementById('chats-view');
                     chatsList.innerHTML = '';
-                    
                     if (snapshot.empty) {
                         chatsList.innerHTML = '<div class="no-data"><i class="fas fa-comments"></i><p>No chats yet. Go to Users tab to start chatting.</p></div>';
                         return;
                     }
-                    
                     for (const doc of snapshot.docs) {
                         const chat = doc.data();
                         const otherUserId = chat.participants.find(id => id !== currentUser.uid);
                         const otherUser = await getUserData(otherUserId);
-                        
                         if (otherUser) {
                             chatsList.appendChild(createChatItem(chat, otherUser, doc.id));
                         }
@@ -1743,21 +1911,15 @@
         // ==================== CHAT FUNCTIONS ====================
         async function startChat(user) {
             if (!currentUser) return;
-            
             const chatsRef = db.collection('chats');
-            const snapshot = await chatsRef
-                .where('participants', 'array-contains', currentUser.uid)
-                .get();
-            
+            const snapshot = await chatsRef.where('participants', 'array-contains', currentUser.uid).get();
             let existingChatId = null;
-            
             snapshot.forEach((doc) => {
                 const chat = doc.data();
                 if (chat.participants.includes(user.uid)) {
                     existingChatId = doc.id;
                 }
             });
-            
             if (existingChatId) {
                 openChat(user, existingChatId);
             } else {
@@ -1768,7 +1930,6 @@
                     lastMessageStatus: 'sent',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
-                
                 const doc = await chatsRef.add(newChat);
                 openChat(user, doc.id);
             }
@@ -1777,86 +1938,108 @@
         function openChat(user, chatId) {
             currentChatUser = user;
             currentChatId = chatId;
-            
             document.getElementById('chat-user-name').textContent = user.name || 'User';
             document.getElementById('chat-user-status').textContent = user.online ? '🟢 Online' : '⚫ Offline';
-            
             const avatarEl = document.getElementById('chat-avatar');
             avatarEl.textContent = user.avatar || (user.name ? user.name.charAt(0).toUpperCase() : '👤');
-            
             document.getElementById('main-app').style.display = 'none';
             document.getElementById('chat-view').style.display = 'flex';
-            
             loadMessages(chatId);
-            
-            setTimeout(() => {
-                document.getElementById('message-input').focus();
-            }, 300);
+            setTimeout(() => document.getElementById('message-input').focus(), 300);
         }
 
         function closeChat() {
             document.getElementById('chat-view').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
-            
-            if (messagesUnsubscribe) {
-                messagesUnsubscribe();
-            }
+            if (messagesUnsubscribe) messagesUnsubscribe();
         }
 
         // ==================== LOAD MESSAGES ====================
         function loadMessages(chatId) {
             if (messagesUnsubscribe) messagesUnsubscribe();
-            
             messagesUnsubscribe = db.collection('messages')
                 .where('chatId', '==', chatId)
                 .orderBy('timestamp', 'asc')
                 .onSnapshot((snapshot) => {
                     const messagesContainer = document.getElementById('chat-messages');
                     messagesContainer.innerHTML = '';
-                    
                     if (snapshot.empty) {
-                        messagesContainer.innerHTML = `
-                            <div class="no-data">
-                                <i class="fas fa-comments"></i>
-                                <p>No messages yet. Say hi! 👋</p>
-                            </div>
-                        `;
+                        messagesContainer.innerHTML = '<div class="no-data"><i class="fas fa-comments"></i><p>No messages yet. Say hi! 👋</p></div>';
                         return;
                     }
-                    
-                    snapshot.forEach((doc) => {
-                        const message = doc.data();
-                        displayMessage(message);
-                    });
-                    
+                    snapshot.forEach(doc => displayMessage(doc.id, doc.data()));
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                     markMessagesAsRead(chatId);
                 });
         }
 
-        function displayMessage(message) {
+        function displayMessage(messageId, message) {
             const div = document.createElement('div');
-            div.className = `message ${message.senderId === currentUser.uid ? 'sent' : 'received'}`;
-            
+            div.className = `message ${message.senderId === currentUser.uid ? 'sent' : 'received'} ${message.deleted ? 'deleted' : ''}`;
+            div.setAttribute('data-message-id', messageId);
+            div.setAttribute('data-sender', message.senderId);
+
             const time = message.timestamp ? message.timestamp.toDate() : new Date();
             const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
             let statusIcon = '';
-            if (message.senderId === currentUser.uid) {
-                if (message.status === 'read') {
-                    statusIcon = '<span class="message-status"><i class="fas fa-check-double" style="color: #4CAF50;"></i></span>';
-                } else if (message.status === 'delivered') {
-                    statusIcon = '<span class="message-status"><i class="fas fa-check-double" style="color: #8696a0;"></i></span>';
-                } else {
-                    statusIcon = '<span class="message-status"><i class="fas fa-check" style="color: #8696a0;"></i></span>';
-                }
+            if (message.senderId === currentUser.uid && !message.deleted) {
+                if (message.status === 'read') statusIcon = '<span class="message-status"><i class="fas fa-check-double" style="color: #4CAF50;"></i></span>';
+                else if (message.status === 'delivered') statusIcon = '<span class="message-status"><i class="fas fa-check-double" style="color: #8696a0;"></i></span>';
+                else statusIcon = '<span class="message-status"><i class="fas fa-check" style="color: #8696a0;"></i></span>';
             }
-            
+
+            let contentHtml = '';
+            if (message.deleted) {
+                contentHtml = '<div><em>This message was deleted</em></div>';
+            } else if (message.type === 'image') {
+                contentHtml = `<img src="${message.text}" class="message-image" onclick="viewImage('${message.text}')">`;
+            } else {
+                contentHtml = `<div>${escapeHtml(message.text)}</div>`;
+            }
+
+            // Reactions
+            let reactionsHtml = '';
+            if (message.reactions) {
+                reactionsHtml = '<div class="message-reactions">';
+                for (const [emoji, count] of Object.entries(message.reactions)) {
+                    reactionsHtml += `<span class="reaction-badge" data-emoji="${emoji}" data-message-id="${messageId}">${emoji}<span>${count}</span></span>`;
+                }
+                reactionsHtml += '</div>';
+            }
+
             div.innerHTML = `
-                <div>${escapeHtml(message.text)}</div>
+                ${contentHtml}
                 <span class="message-time">${timeStr} ${statusIcon}</span>
+                ${reactionsHtml}
             `;
-            
+
+            // Add long-press event to show reaction menu
+            let pressTimer;
+            div.addEventListener('touchstart', (e) => {
+                pressTimer = setTimeout(() => {
+                    showReactionMenu(e, messageId, div);
+                }, 500);
+            });
+            div.addEventListener('touchend', () => clearTimeout(pressTimer));
+            div.addEventListener('touchmove', () => clearTimeout(pressTimer));
+            // Also for mouse (optional)
+            div.addEventListener('mousedown', (e) => {
+                if (e.button === 0) {
+                    pressTimer = setTimeout(() => showReactionMenu(e, messageId, div), 500);
+                }
+            });
+            div.addEventListener('mouseup', () => clearTimeout(pressTimer));
+            div.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+
+            // Click on reaction badge to add same reaction
+            div.querySelectorAll('.reaction-badge').forEach(badge => {
+                badge.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const emoji = badge.dataset.emoji;
+                    addReaction(messageId, emoji);
+                });
+            });
+
             document.getElementById('chat-messages').appendChild(div);
         }
 
@@ -1866,121 +2049,192 @@
             return div.innerHTML;
         }
 
+        function viewImage(url) {
+            document.getElementById('viewer-image').src = url;
+            document.getElementById('image-viewer').classList.add('active');
+        }
+
         function markMessagesAsRead(chatId) {
             if (!currentUser || !currentChatUser) return;
-            
             db.collection('messages')
                 .where('chatId', '==', chatId)
                 .where('receiverId', '==', currentUser.uid)
                 .where('status', '==', 'sent')
                 .get()
-                .then((snapshot) => {
-                    snapshot.forEach((doc) => {
-                        doc.ref.update({ status: 'delivered' });
-                    });
-                });
+                .then(snapshot => snapshot.forEach(doc => doc.ref.update({ status: 'delivered' })));
         }
 
-        // ==================== SEND MESSAGE ====================
+        // ==================== REACTIONS & DELETE ====================
+        function showReactionMenu(event, messageId, messageElement) {
+            // Hide any existing menu
+            const menu = document.getElementById('reaction-menu');
+            menu.style.display = 'none';
+
+            // Position menu near the touch
+            const x = event.touches ? event.touches[0].clientX : event.clientX;
+            const y = event.touches ? event.touches[0].clientY : event.clientY;
+            menu.style.left = (x - 100) + 'px';
+            menu.style.top = (y - 60) + 'px';
+            menu.style.display = 'flex';
+
+            activeMessageForReaction = { messageId, element: messageElement };
+
+            // Show delete only if sender
+            const deleteBtn = document.getElementById('reaction-delete');
+            const senderId = messageElement.dataset.sender;
+            deleteBtn.style.display = (senderId === currentUser.uid) ? 'inline-block' : 'none';
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                menu.style.display = 'none';
+            }, 3000);
+        }
+
+        async function addReaction(messageId, emoji) {
+            const menu = document.getElementById('reaction-menu');
+            menu.style.display = 'none';
+
+            const messageRef = db.collection('messages').doc(messageId);
+            await db.runTransaction(async (transaction) => {
+                const messageDoc = await transaction.get(messageRef);
+                if (!messageDoc.exists) return;
+                const reactions = messageDoc.data().reactions || {};
+                reactions[emoji] = (reactions[emoji] || 0) + 1;
+                transaction.update(messageRef, { reactions });
+            });
+        }
+
+        async function deleteMessage() {
+            if (!activeMessageForReaction) return;
+            if (!confirm('Delete this message?')) return;
+
+            const menu = document.getElementById('reaction-menu');
+            menu.style.display = 'none';
+
+            const messageRef = db.collection('messages').doc(activeMessageForReaction.messageId);
+            await messageRef.update({
+                deleted: true,
+                text: '',
+                type: 'text',
+                reactions: null
+            });
+            activeMessageForReaction = null;
+        }
+
+        // Attach delete button
+        document.getElementById('reaction-delete').addEventListener('click', deleteMessage);
+
+        // Attach reaction emoji buttons
+        document.querySelectorAll('.reaction-emoji').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (activeMessageForReaction) {
+                    addReaction(activeMessageForReaction.messageId, btn.dataset.emoji);
+                }
+            });
+        });
+
+        // Hide menu when tapping elsewhere
+        document.addEventListener('touchstart', (e) => {
+            const menu = document.getElementById('reaction-menu');
+            if (menu.style.display === 'flex' && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // ==================== SEND MESSAGE (with image support) ====================
         async function sendMessage() {
             const input = document.getElementById('message-input');
             const text = input.value.trim();
-            
-            if (!text || !currentChatUser || !currentChatId) return;
-            
-            const message = {
-                chatId: currentChatId,
-                senderId: currentUser.uid,
-                receiverId: currentChatUser.uid,
-                text: text,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'sent',
-                type: 'text'
-            };
-            
-            await db.collection('messages').add(message);
-            
-            await db.collection('chats').doc(currentChatId).update({
-                lastMessage: text,
-                lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                lastMessageStatus: 'sent'
-            });
-            
-            input.value = '';
+
+            if (!text && !selectedFile) return;
+            if (!currentChatUser || !currentChatId) return;
+
+            if (selectedFile) {
+                // Upload image
+                showLoading(true);
+                const fileRef = storage.ref(`chats/${currentChatId}/${Date.now()}_${selectedFile.name}`);
+                try {
+                    await fileRef.put(selectedFile);
+                    const url = await fileRef.getDownloadURL();
+                    const message = {
+                        chatId: currentChatId,
+                        senderId: currentUser.uid,
+                        receiverId: currentChatUser.uid,
+                        text: url,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: 'sent',
+                        type: 'image'
+                    };
+                    await db.collection('messages').add(message);
+                    await db.collection('chats').doc(currentChatId).update({
+                        lastMessage: '📷 Image',
+                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastMessageStatus: 'sent'
+                    });
+                    selectedFile = null;
+                    showToast('Image sent!', 'success');
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    showToast('Failed to send image', 'error');
+                } finally {
+                    showLoading(false);
+                }
+            } else {
+                // Text message
+                const message = {
+                    chatId: currentChatId,
+                    senderId: currentUser.uid,
+                    receiverId: currentChatUser.uid,
+                    text: text,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'sent',
+                    type: 'text'
+                };
+                await db.collection('messages').add(message);
+                await db.collection('chats').doc(currentChatId).update({
+                    lastMessage: text,
+                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastMessageStatus: 'sent'
+                });
+                input.value = '';
+            }
         }
 
         function handleMessageTyping(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-                return;
-            }
-            
+            if (event.key === 'Enter') { sendMessage(); return; }
             if (!currentChatUser || !currentChatId) return;
-            
             const typingRef = db.collection('typing').doc(`${currentUser.uid}_${currentChatUser.uid}`);
-            
-            typingRef.set({
-                isTyping: true,
-                userId: currentUser.uid,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
+            typingRef.set({ isTyping: true, userId: currentUser.uid, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
             if (typingTimeout) clearTimeout(typingTimeout);
-            
-            typingTimeout = setTimeout(() => {
-                typingRef.delete();
-            }, 2000);
+            typingTimeout = setTimeout(() => typingRef.delete(), 2000);
         }
 
-        // ==================== PHONE AUTH (REAL) ====================
+        // ==================== PHONE AUTH ====================
         function sendOTP() {
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
-            
-            if (!name) {
-                showToast('Please enter your name', 'error');
-                return;
-            }
-            
-            if (!phone || phone.length !== 10) {
-                showToast('Please enter a valid 10-digit phone number', 'error');
-                return;
-            }
-            
+            if (!name) { showToast('Please enter your name', 'error'); return; }
+            if (!phone || phone.length !== 10) { showToast('Please enter a valid 10-digit phone number', 'error'); return; }
             const phoneNumber = '+91' + phone;
             document.getElementById('display-phone').textContent = phoneNumber;
             sessionStorage.setItem('pendingName', name);
-            
             const sendBtn = document.getElementById('send-otp-btn');
             sendBtn.disabled = true;
             sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            
-            // Create reCAPTCHA verifier
             if (!recaptchaVerifier) {
-                recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                    'size': 'invisible',
-                    'callback': (response) => {
-                        console.log('reCAPTCHA solved');
-                    }
-                });
+                recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'invisible' });
             }
-            
-            // Send real OTP
             auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
-                .then((result) => {
+                .then(result => {
                     confirmationResult = result;
-                    
                     document.getElementById('login-screen').style.display = 'none';
                     document.getElementById('otp-screen').style.display = 'block';
-                    
                     startOTPTimer();
-                    
                     sendBtn.disabled = false;
                     sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
-                    
                     showToast('OTP sent successfully!', 'success');
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log('OTP error:', error);
                     sendBtn.disabled = false;
                     sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
@@ -1990,35 +2244,19 @@
 
         function verifyOTP() {
             const otp = getOTP();
-            
-            if (otp.length !== 6) {
-                showToast('Please enter 6-digit OTP', 'error');
-                return;
-            }
-            
-            if (!confirmationResult) {
-                showToast('Please request OTP first', 'error');
-                return;
-            }
-            
+            if (otp.length !== 6) { showToast('Please enter 6-digit OTP', 'error'); return; }
+            if (!confirmationResult) { showToast('Please request OTP first', 'error'); return; }
             const verifyBtn = document.getElementById('verify-otp-btn');
             verifyBtn.disabled = true;
             verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-            
             confirmationResult.confirm(otp)
-                .then((result) => {
+                .then(() => {
                     showToast('Login successful!', 'success');
                     clearInterval(timerInterval);
-                    
-                    // Name will be saved in auth state listener
                     sessionStorage.removeItem('pendingName');
-                    
-                    // Clear OTP inputs
-                    for (let i = 1; i <= 6; i++) {
-                        document.getElementById(`otp${i}`).value = '';
-                    }
+                    for (let i = 1; i <= 6; i++) document.getElementById(`otp${i}`).value = '';
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log('Verification error:', error);
                     verifyBtn.disabled = false;
                     verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify OTP';
@@ -2028,48 +2266,34 @@
 
         function getOTP() {
             let otp = '';
-            for (let i = 1; i <= 6; i++) {
-                otp += document.getElementById(`otp${i}`).value;
-            }
+            for (let i = 1; i <= 6; i++) otp += document.getElementById(`otp${i}`).value;
             return otp;
         }
 
         function resendOTP() {
-            if (!confirmationResult) {
-                showToast('Please request OTP first', 'error');
-                return;
-            }
-            
+            if (!confirmationResult) { showToast('Please request OTP first', 'error'); return; }
             const phoneNumber = document.getElementById('display-phone').textContent;
-            
             auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
-                .then((result) => {
+                .then(result => {
                     confirmationResult = result;
                     otpTimer = 30;
                     startOTPTimer();
                     showToast('OTP resent!', 'success');
                 })
-                .catch((error) => {
-                    console.log('Resend error:', error);
-                    showToast('Failed to resend OTP: ' + error.message, 'error');
-                });
+                .catch(error => showToast('Failed to resend OTP: ' + error.message, 'error'));
         }
 
         function startOTPTimer() {
             const timerEl = document.getElementById('timer');
             const resendBtn = document.getElementById('resend-otp-btn');
-            
             if (timerInterval) clearInterval(timerInterval);
-            
             resendBtn.disabled = true;
             otpTimer = 30;
-            
             timerInterval = setInterval(() => {
                 otpTimer--;
-                const minutes = Math.floor(otpTimer / 60);
-                const seconds = otpTimer % 60;
-                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
+                const mins = Math.floor(otpTimer / 60);
+                const secs = otpTimer % 60;
+                timerEl.textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
                 if (otpTimer <= 0) {
                     clearInterval(timerInterval);
                     resendBtn.disabled = false;
@@ -2091,62 +2315,33 @@
         }
 
         function handleOtpKeyPress(event) {
-            const charCode = event.which ? event.which : event.keyCode;
-            if (charCode < 48 || charCode > 57) {
-                event.preventDefault();
-            }
+            const charCode = event.which || event.keyCode;
+            if (charCode < 48 || charCode > 57) event.preventDefault();
         }
 
-        // ==================== GOOGLE AUTH (REAL) ====================
+        // ==================== GOOGLE AUTH ====================
         function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            
             auth.signInWithPopup(provider)
-                .then((result) => {
-                    showToast('Google login successful!', 'success');
-                })
-                .catch((error) => {
-                    console.log('Google login error:', error);
-                    showToast('Google login failed: ' + error.message, 'error');
-                });
+                .then(() => showToast('Google login successful!', 'success'))
+                .catch(error => showToast('Google login failed: ' + error.message, 'error'));
         }
 
-        // ==================== EMAIL AUTH (REAL) ====================
+        // ==================== EMAIL AUTH ====================
         function emailSignup() {
             const name = document.getElementById('email-name').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            
-            if (!name || !email || !password) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showToast('Password must be at least 6 characters', 'error');
-                return;
-            }
-            
-            // Try to sign in first
+            if (!name || !email || !password) { showToast('Please fill all fields', 'error'); return; }
+            if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    showToast('Login successful!', 'success');
-                })
-                .catch((error) => {
+                .then(() => showToast('Login successful!', 'success'))
+                .catch(error => {
                     if (error.code === 'auth/user-not-found') {
-                        // Create new account
                         auth.createUserWithEmailAndPassword(email, password)
-                            .then((userCredential) => {
-                                // Update profile with name
-                                return userCredential.user.updateProfile({
-                                    displayName: name
-                                }).then(() => {
-                                    showToast('Account created successfully!', 'success');
-                                });
-                            })
-                            .catch((createError) => {
-                                showToast('Signup failed: ' + createError.message, 'error');
-                            });
+                            .then(userCredential => userCredential.user.updateProfile({ displayName: name }))
+                            .then(() => showToast('Account created!', 'success'))
+                            .catch(err => showToast('Signup failed: ' + err.message, 'error'));
                     } else {
                         showToast('Login failed: ' + error.message, 'error');
                     }
@@ -2159,7 +2354,6 @@
             const emailTab = document.getElementById('email-tab');
             const phoneForm = document.getElementById('phone-login');
             const emailForm = document.getElementById('email-login');
-            
             if (tab === 'phone') {
                 phoneTab.classList.add('active');
                 emailTab.classList.remove('active');
@@ -2178,17 +2372,9 @@
             document.getElementById('users-view').style.display = 'none';
             document.getElementById('profile-view').style.display = 'none';
             document.getElementById('settings-view').style.display = 'none';
-            
             document.getElementById(view + '-view').style.display = 'block';
-            
-            const titles = {
-                'chats': '💬 Chats',
-                'users': '👥 Users',
-                'profile': '👤 Profile',
-                'settings': '⚙️ Settings'
-            };
+            const titles = { chats: '💬 Chats', users: '👥 Users', profile: '👤 Profile', settings: '⚙️ Settings' };
             document.getElementById('header-title').textContent = titles[view];
-            
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById('nav-' + view).classList.add('active');
         }
@@ -2210,14 +2396,8 @@
 
         async function saveEdit() {
             const newValue = document.getElementById('modal-input').value.trim();
-            
-            if (!newValue) {
-                showToast('Please enter a value', 'error');
-                return;
-            }
-            
+            if (!newValue) { showToast('Please enter a value', 'error'); return; }
             const updateData = {};
-            
             if (currentEditField === 'status') {
                 updateData.status = newValue;
                 document.getElementById('profile-status').textContent = newValue;
@@ -2226,19 +2406,13 @@
             } else if (currentEditField === 'name') {
                 updateData.name = newValue;
                 updateData.avatar = newValue.charAt(0).toUpperCase();
-                
                 document.getElementById('profile-name').textContent = newValue;
                 document.getElementById('settings-name').textContent = newValue;
-                
                 const initials = newValue.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
                 document.getElementById('profile-avatar').textContent = initials;
                 showToast('Name updated!', 'success');
             }
-            
-            if (currentUser) {
-                await db.collection('users').doc(currentUser.uid).update(updateData);
-            }
-            
+            if (currentUser) await db.collection('users').doc(currentUser.uid).update(updateData);
             closeModal();
         }
 
@@ -2256,66 +2430,93 @@
         function formatTime(date) {
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            
-            if (date >= today) {
-                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            } else if (date >= yesterday) {
-                return 'Yesterday';
-            } else {
-                return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+            const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+            if (date >= today) return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            else if (date >= yesterday) return 'Yesterday';
+            else return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        }
+
+        // ==================== SKELETON LOADING ====================
+        function showSkeleton(container, count = 3) {
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const skeleton = document.createElement('div');
+                skeleton.className = 'skeleton';
+                skeleton.style.height = '60px';
+                skeleton.style.margin = '10px';
+                container.appendChild(skeleton);
             }
         }
 
+        const originalLoadChats = loadChats;
+        loadChats = function() {
+            const chatsList = document.getElementById('chats-view');
+            showSkeleton(chatsList, 4);
+            originalLoadChats();
+        };
+
+        const originalLoadUsers = loadUsersAndRequests;
+        loadUsersAndRequests = function() {
+            const usersList = document.getElementById('all-users-list');
+            showSkeleton(usersList, 5);
+            originalLoadUsers();
+        };
+
+        // ==================== FILE ATTACHMENT ====================
+        document.getElementById('attach-btn').addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                selectedFile = file;
+                showToast('Image selected! Click send to upload.', 'info');
+            } else {
+                showToast('Please select an image file', 'error');
+            }
+        });
+
+        // ==================== IMAGE VIEWER ====================
+        document.getElementById('close-image-viewer').addEventListener('click', () => {
+            document.getElementById('image-viewer').classList.remove('active');
+        });
+
+        document.getElementById('image-viewer').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('image-viewer')) {
+                document.getElementById('image-viewer').classList.remove('active');
+            }
+        });
+
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
             document.getElementById('phone-tab').addEventListener('click', () => switchTab('phone'));
             document.getElementById('email-tab').addEventListener('click', () => switchTab('email'));
-            
-            // Login buttons
             document.getElementById('send-otp-btn').addEventListener('click', sendOTP);
             document.getElementById('google-btn').addEventListener('click', googleLogin);
             document.getElementById('google-btn-2').addEventListener('click', googleLogin);
             document.getElementById('email-signup-btn').addEventListener('click', emailSignup);
-            
-            // OTP screen
             document.getElementById('back-to-phone').addEventListener('click', backToPhone);
             document.getElementById('verify-otp-btn').addEventListener('click', verifyOTP);
             document.getElementById('resend-otp-btn').addEventListener('click', resendOTP);
-            
-            // OTP input handling
             for (let i = 1; i <= 6; i++) {
                 const otpInput = document.getElementById(`otp${i}`);
                 otpInput.addEventListener('keyup', function() { moveToNext(this, i); });
                 otpInput.addEventListener('keypress', handleOtpKeyPress);
             }
-            
-            // Navigation
             document.getElementById('nav-chats').addEventListener('click', () => switchView('chats'));
             document.getElementById('nav-users').addEventListener('click', () => switchView('users'));
             document.getElementById('nav-profile').addEventListener('click', () => switchView('profile'));
             document.getElementById('nav-settings').addEventListener('click', () => switchView('settings'));
-            
-            // Profile editing
             document.getElementById('edit-status').addEventListener('click', editStatus);
             document.getElementById('edit-status-settings').addEventListener('click', editStatus);
             document.getElementById('edit-name-settings').addEventListener('click', editName);
-            
-            // Modal
             document.getElementById('save-edit').addEventListener('click', saveEdit);
             document.getElementById('cancel-edit').addEventListener('click', closeModal);
-            
-            // Chat
             document.getElementById('close-chat').addEventListener('click', closeChat);
             document.getElementById('send-message-btn').addEventListener('click', sendMessage);
             document.getElementById('message-input').addEventListener('keypress', handleMessageTyping);
-            
-            // Logout
             document.getElementById('logout-btn').addEventListener('click', logout);
-            
-            // Search
             document.getElementById('search-input').addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
                 document.querySelectorAll('.chat-item').forEach(item => {
@@ -2323,16 +2524,11 @@
                     item.style.display = name.includes(term) ? 'flex' : 'none';
                 });
             });
-            
-            // Initialize
             switchTab('phone');
         });
 
-        // Close modal on outside click
         window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('edit-modal')) {
-                closeModal();
-            }
+            if (e.target === document.getElementById('edit-modal')) closeModal();
         });
     </script>
 </body>
