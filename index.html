@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NS CHAT - Reactions & More</title>
+    <title>NS CHAT - Fast & Reliable</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -939,6 +939,10 @@
             gap: 2px;
             backdrop-filter: blur(2px);
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .reaction-badge:hover {
+            transform: scale(1.1);
         }
         .reaction-badge span {
             margin-left: 2px;
@@ -953,7 +957,7 @@
             padding: 8px 12px;
             display: flex;
             gap: 12px;
-            z-index: 1000;
+            z-index: 10000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             border: 1px solid var(--border-color);
             animation: fadeIn 0.2s ease;
@@ -1104,6 +1108,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            pointer-events: auto;
         }
 
         .request-btn.accept { background: var(--success); color: white; }
@@ -1592,6 +1597,7 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
+        // Enable persistence
         db.enablePersistence().catch(err => console.log('Persistence error:', err));
 
         // ==================== GLOBAL VARIABLES ====================
@@ -1607,7 +1613,7 @@
         let recaptchaVerifier = null;
         let currentEditField = '';
         let selectedFile = null;
-        let activeMessageForReaction = null; // { messageId, element, x, y }
+        let activeMessageForReaction = null;
 
         // Toast function
         function showToast(message, type = 'info', duration = 3000) {
@@ -1714,7 +1720,7 @@
             }
         });
 
-        // ==================== LOAD USERS AND REQUESTS ====================
+        // ==================== LOAD USERS AND REQUESTS (with event delegation) ====================
         function loadUsersAndRequests() {
             if (!currentUser) return;
 
@@ -1755,6 +1761,7 @@
             for (let user of users) {
                 const div = document.createElement('div');
                 div.className = 'chat-item';
+                div.setAttribute('data-userid', user.uid);
                 div.innerHTML = `
                     <div class="chat-avatar">
                         ${user.avatar || user.name.charAt(0).toUpperCase()}
@@ -1799,6 +1806,7 @@
                 const user = userDoc.data();
                 const div = document.createElement('div');
                 div.className = 'request-item';
+                div.setAttribute('data-requestid', req.id);
                 div.innerHTML = `
                     <div class="chat-avatar" style="width:40px;height:40px;font-size:16px;">
                         ${user?.avatar || user?.name?.charAt(0) || '?'}
@@ -1813,20 +1821,22 @@
                 `;
                 list.appendChild(div);
             });
-
-            list.querySelectorAll('.accept').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    acceptFriendRequest(btn.dataset.id, btn.dataset.from);
-                });
-            });
-            list.querySelectorAll('.reject').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    rejectFriendRequest(btn.dataset.id);
-                });
-            });
         }
+
+        // Event delegation for friend request buttons
+        document.getElementById('requests-list').addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('accept')) {
+                e.stopPropagation();
+                const requestId = target.dataset.id;
+                const fromUid = target.dataset.from;
+                acceptFriendRequest(requestId, fromUid);
+            } else if (target.classList.contains('reject')) {
+                e.stopPropagation();
+                const requestId = target.dataset.id;
+                rejectFriendRequest(requestId);
+            }
+        });
 
         async function sendFriendRequest(toUid) {
             await db.collection('friendRequests').add({
@@ -1857,7 +1867,7 @@
             showToast('Friend request rejected', 'info');
         }
 
-        // ==================== LOAD CHATS ====================
+        // ==================== LOAD CHATS (optimized) ====================
         function loadChats() {
             if (!currentUser) return;
             db.collection('chats')
@@ -1870,12 +1880,16 @@
                         chatsList.innerHTML = '<div class="no-data"><i class="fas fa-comments"></i><p>No chats yet. Go to Users tab to start chatting.</p></div>';
                         return;
                     }
-                    for (const doc of snapshot.docs) {
+                    const chatPromises = snapshot.docs.map(async (doc) => {
                         const chat = doc.data();
                         const otherUserId = chat.participants.find(id => id !== currentUser.uid);
                         const otherUser = await getUserData(otherUserId);
-                        if (otherUser) {
-                            chatsList.appendChild(createChatItem(chat, otherUser, doc.id));
+                        return { chat, otherUser, chatId: doc.id };
+                    });
+                    const chatItems = await Promise.all(chatPromises);
+                    for (let item of chatItems) {
+                        if (item.otherUser) {
+                            chatsList.appendChild(createChatItem(item.chat, item.otherUser, item.chatId));
                         }
                     }
                 });
@@ -1997,7 +2011,6 @@
                 contentHtml = `<div>${escapeHtml(message.text)}</div>`;
             }
 
-            // Reactions
             let reactionsHtml = '';
             if (message.reactions) {
                 reactionsHtml = '<div class="message-reactions">';
@@ -2013,7 +2026,7 @@
                 ${reactionsHtml}
             `;
 
-            // Add long-press event to show reaction menu
+            // Long-press for reactions
             let pressTimer;
             div.addEventListener('touchstart', (e) => {
                 pressTimer = setTimeout(() => {
@@ -2022,7 +2035,6 @@
             });
             div.addEventListener('touchend', () => clearTimeout(pressTimer));
             div.addEventListener('touchmove', () => clearTimeout(pressTimer));
-            // Also for mouse (optional)
             div.addEventListener('mousedown', (e) => {
                 if (e.button === 0) {
                     pressTimer = setTimeout(() => showReactionMenu(e, messageId, div), 500);
@@ -2031,7 +2043,6 @@
             div.addEventListener('mouseup', () => clearTimeout(pressTimer));
             div.addEventListener('mouseleave', () => clearTimeout(pressTimer));
 
-            // Click on reaction badge to add same reaction
             div.querySelectorAll('.reaction-badge').forEach(badge => {
                 badge.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2066,11 +2077,9 @@
 
         // ==================== REACTIONS & DELETE ====================
         function showReactionMenu(event, messageId, messageElement) {
-            // Hide any existing menu
             const menu = document.getElementById('reaction-menu');
             menu.style.display = 'none';
 
-            // Position menu near the touch
             const x = event.touches ? event.touches[0].clientX : event.clientX;
             const y = event.touches ? event.touches[0].clientY : event.clientY;
             menu.style.left = (x - 100) + 'px';
@@ -2079,12 +2088,10 @@
 
             activeMessageForReaction = { messageId, element: messageElement };
 
-            // Show delete only if sender
             const deleteBtn = document.getElementById('reaction-delete');
             const senderId = messageElement.dataset.sender;
             deleteBtn.style.display = (senderId === currentUser.uid) ? 'inline-block' : 'none';
 
-            // Auto-hide after 3 seconds
             setTimeout(() => {
                 menu.style.display = 'none';
             }, 3000);
@@ -2121,10 +2128,8 @@
             activeMessageForReaction = null;
         }
 
-        // Attach delete button
         document.getElementById('reaction-delete').addEventListener('click', deleteMessage);
 
-        // Attach reaction emoji buttons
         document.querySelectorAll('.reaction-emoji').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (activeMessageForReaction) {
@@ -2133,15 +2138,20 @@
             });
         });
 
-        // Hide menu when tapping elsewhere
         document.addEventListener('touchstart', (e) => {
             const menu = document.getElementById('reaction-menu');
             if (menu.style.display === 'flex' && !menu.contains(e.target)) {
                 menu.style.display = 'none';
             }
         });
+        document.addEventListener('mousedown', (e) => {
+            const menu = document.getElementById('reaction-menu');
+            if (menu.style.display === 'flex' && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
 
-        // ==================== SEND MESSAGE (with image support) ====================
+        // ==================== SEND MESSAGE ====================
         async function sendMessage() {
             const input = document.getElementById('message-input');
             const text = input.value.trim();
@@ -2150,7 +2160,6 @@
             if (!currentChatUser || !currentChatId) return;
 
             if (selectedFile) {
-                // Upload image
                 showLoading(true);
                 const fileRef = storage.ref(`chats/${currentChatId}/${Date.now()}_${selectedFile.name}`);
                 try {
@@ -2180,7 +2189,6 @@
                     showLoading(false);
                 }
             } else {
-                // Text message
                 const message = {
                     chatId: currentChatId,
                     senderId: currentUser.uid,
