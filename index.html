@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NS CHAT</title>
+    <title>NS CHAT - Real Firebase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -29,7 +29,6 @@
             --message-received: #202c33;
             --danger: #f44336;
             --success: #4CAF50;
-            --warning: #ff9800;
         }
 
         body {
@@ -53,24 +52,27 @@
             height: 100vh;
             background: white;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
         }
 
         .login-header {
             background: var(--primary);
             color: white;
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
         }
 
         .login-header i {
-            font-size: 70px;
+            font-size: 80px;
             margin-bottom: 20px;
+            color: white;
         }
 
         .login-header h1 {
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .login-header p {
@@ -81,19 +83,18 @@
         .login-tabs {
             display: flex;
             background: white;
-            border-bottom: 1px solid #e9edef;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            border-bottom: 2px solid #e9edef;
         }
 
         .login-tab {
             flex: 1;
-            padding: 15px;
+            padding: 16px;
             text-align: center;
             font-weight: 600;
             color: #667781;
             cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
         }
 
         .login-tab.active {
@@ -103,7 +104,8 @@
 
         .login-form {
             display: none;
-            padding: 20px;
+            padding: 25px 20px;
+            flex: 1;
         }
 
         .login-form.active {
@@ -124,7 +126,7 @@
 
         .form-group input {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             border: 2px solid #e9edef;
             border-radius: 12px;
             font-size: 16px;
@@ -143,13 +145,14 @@
 
         .country-code {
             width: 80px;
-            padding: 15px;
+            padding: 16px;
             background: #f0f2f4;
             border: 2px solid #e9edef;
             border-radius: 12px;
             font-weight: 600;
             color: var(--primary);
             text-align: center;
+            font-size: 16px;
         }
 
         .btn-primary {
@@ -163,15 +166,21 @@
             font-weight: 600;
             cursor: pointer;
             margin: 10px 0;
+            transition: background 0.3s;
         }
 
-        .btn-primary:active {
+        .btn-primary:hover {
             background: var(--primary-dark);
+        }
+
+        .btn-primary:disabled {
+            background: #80b5aa;
+            cursor: not-allowed;
         }
 
         .btn-google {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: white;
             color: #3b4a54;
             border: 2px solid #e9edef;
@@ -183,14 +192,16 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: all 0.3s;
         }
 
-        .btn-google:active {
+        .btn-google:hover {
             background: #f5f5f5;
         }
 
         .btn-google i {
             color: #DB4437;
+            font-size: 20px;
         }
 
         .divider {
@@ -229,11 +240,11 @@
 
         .otp-input {
             width: 45px;
-            height: 45px;
+            height: 50px;
             border: 2px solid #e9edef;
             border-radius: 10px;
             text-align: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
         }
 
@@ -246,6 +257,7 @@
             text-align: center;
             color: #667781;
             margin: 15px 0;
+            font-size: 16px;
         }
 
         .resend-btn {
@@ -255,6 +267,12 @@
             font-weight: 600;
             cursor: pointer;
             padding: 10px;
+            font-size: 16px;
+        }
+
+        .resend-btn:disabled {
+            color: #999;
+            cursor: not-allowed;
         }
 
         .back-link {
@@ -262,6 +280,7 @@
             color: var(--primary);
             cursor: pointer;
             padding: 15px;
+            font-size: 16px;
         }
 
         /* ========== MAIN APP ========== */
@@ -270,15 +289,10 @@
             width: 100%;
             height: 100vh;
             background: var(--bg-chat);
+            flex-direction: column;
         }
 
-        /* Chats List View */
-        #chats-view {
-            display: none;
-            height: 100%;
-            background: var(--bg-sidebar);
-        }
-
+        /* Header */
         .app-header {
             background: var(--primary);
             color: white;
@@ -286,10 +300,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            height: 60px;
         }
 
         .app-header h2 {
             font-size: 22px;
+            font-weight: 500;
         }
 
         .header-icons {
@@ -299,8 +315,10 @@
 
         .header-icons i {
             font-size: 22px;
+            cursor: pointer;
         }
 
+        /* Search Bar */
         .search-bar {
             padding: 12px;
             background: var(--bg-sidebar);
@@ -317,6 +335,7 @@
 
         .search-box i {
             color: var(--text-secondary);
+            font-size: 16px;
         }
 
         .search-box input {
@@ -331,6 +350,19 @@
             color: var(--text-secondary);
         }
 
+        .search-box input:focus {
+            outline: none;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg-sidebar);
+            padding-bottom: 60px;
+        }
+
+        /* Chat/User Items */
         .chat-item {
             display: flex;
             align-items: center;
@@ -339,9 +371,10 @@
             background: var(--bg-sidebar);
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .chat-item:active {
+        .chat-item:hover {
             background: #2a3942;
         }
 
@@ -357,6 +390,7 @@
             font-weight: bold;
             font-size: 22px;
             position: relative;
+            flex-shrink: 0;
         }
 
         .online-badge {
@@ -372,28 +406,34 @@
 
         .chat-info {
             flex: 1;
+            min-width: 0;
         }
 
         .chat-name {
             color: var(--text-primary);
             font-weight: 600;
             margin-bottom: 5px;
+            font-size: 16px;
         }
 
         .chat-last-msg {
             color: var(--text-secondary);
             font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .chat-time {
             color: var(--text-secondary);
             font-size: 12px;
+            margin-left: 10px;
         }
 
         /* Chat View */
         #chat-view {
             display: none;
-            height: 100%;
+            height: 100vh;
             background: var(--bg-chat);
             flex-direction: column;
         }
@@ -405,6 +445,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            height: 60px;
         }
 
         .back-btn {
@@ -420,6 +461,7 @@
         .chat-header-info h3 {
             font-size: 18px;
             margin-bottom: 3px;
+            font-weight: 500;
         }
 
         .chat-header-info p {
@@ -434,6 +476,7 @@
 
         .chat-header-actions i {
             font-size: 22px;
+            cursor: pointer;
         }
 
         #chat-messages {
@@ -453,6 +496,12 @@
             font-size: 15px;
             line-height: 1.4;
             word-wrap: break-word;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.sent {
@@ -502,6 +551,7 @@
             color: var(--text-secondary);
             font-size: 24px;
             cursor: pointer;
+            padding: 5px;
         }
 
         .send-btn {
@@ -515,9 +565,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .send-btn:active {
+        .send-btn:hover {
             background: var(--primary-dark);
         }
 
@@ -526,35 +577,49 @@
             font-size: 18px;
         }
 
-        /* Users List View */
-        #users-view {
-            display: none;
-            height: 100%;
+        /* Bottom Navigation */
+        .bottom-nav {
             background: var(--bg-sidebar);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 5px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .nav-item span {
+            font-size: 11px;
         }
 
         /* Profile View */
-        #profile-view {
-            display: none;
-            height: 100%;
-            background: var(--bg-sidebar);
-            overflow-y: auto;
-        }
-
-        .profile-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .profile-content {
+        .profile-view {
             padding: 20px;
         }
 
-        .profile-avatar-section {
+        .profile-header-section {
             text-align: center;
             margin-bottom: 30px;
         }
@@ -573,11 +638,22 @@
             margin: 0 auto 15px;
         }
 
+        .profile-name {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
         .profile-field {
             background: #2a3942;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .profile-field:hover {
+            background: #3a4a54;
         }
 
         .profile-field label {
@@ -595,26 +671,13 @@
             justify-content: space-between;
         }
 
-        .profile-field i {
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 5px;
-        }
-
         /* Settings View */
-        #settings-view {
-            display: none;
-            height: 100%;
-            background: var(--bg-sidebar);
-            overflow-y: auto;
-        }
-
         .settings-section {
             margin-bottom: 20px;
         }
 
         .settings-title {
-            padding: 15px;
+            padding: 15px 20px 5px;
             color: var(--text-secondary);
             font-size: 14px;
             text-transform: uppercase;
@@ -622,7 +685,7 @@
 
         .settings-item {
             background: #2a3942;
-            padding: 15px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -630,7 +693,7 @@
             cursor: pointer;
         }
 
-        .settings-item:active {
+        .settings-item:hover {
             background: #3a4a54;
         }
 
@@ -647,40 +710,6 @@
 
         .settings-item .value {
             color: var(--text-secondary);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            background: var(--bg-sidebar);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        .nav-item span {
-            font-size: 11px;
         }
 
         /* Modal */
@@ -744,9 +773,17 @@
             color: white;
         }
 
+        .modal-buttons .save:hover {
+            background: var(--primary-dark);
+        }
+
         .modal-buttons .cancel {
             background: #2a3942;
             color: var(--text-primary);
+        }
+
+        .modal-buttons .cancel:hover {
+            background: #3a4a54;
         }
 
         .error-message, .success-message {
@@ -754,6 +791,7 @@
             margin: 10px 0;
             border-radius: 8px;
             text-align: center;
+            font-size: 14px;
         }
 
         .error-message {
@@ -788,9 +826,18 @@
             animation: typing 1.4s infinite;
         }
 
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); }
             30% { transform: translateY(-5px); }
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 40px 20px;
         }
     </style>
 </head>
@@ -801,7 +848,7 @@
             <div class="login-header">
                 <i class="fab fa-whatsapp"></i>
                 <h1>NS CHAT</h1>
-                <p>Connect with your world</p>
+                <p>Connect with your world instantly</p>
             </div>
 
             <div class="login-tabs">
@@ -816,13 +863,14 @@
                     <input type="text" id="name" placeholder="Enter your full name">
                 </div>
                 <div class="form-group">
-                    <label>Phone Number</label>
+                    <label>Phone Number (India)</label>
                     <div class="phone-input">
                         <input type="text" class="country-code" value="+91" readonly>
                         <input type="tel" id="phone" placeholder="9876543210" maxlength="10">
                     </div>
                 </div>
-                <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
+                <div id="recaptcha-container"></div>
+                <button class="btn-primary" onclick="sendOTP()" id="send-otp-btn">Send OTP</button>
 
                 <div class="divider">
                     <span>or</span>
@@ -836,29 +884,29 @@
 
             <!-- OTP Verification -->
             <div id="otp-verification" class="login-form">
-                <p style="text-align: center; margin-bottom: 20px;">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">
                     Enter the 6-digit code sent to<br>
                     <strong id="display-phone"></strong>
                 </p>
                 
                 <div class="otp-container">
-                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)" onkeypress="handleOtpKeyPress(event)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)" onkeypress="handleOtpKeyPress(event)">
                 </div>
 
                 <div class="timer" id="timer">00:30</div>
                 
-                <button class="btn-primary" onclick="verifyOTP()">Verify OTP</button>
+                <button class="btn-primary" onclick="verifyOTP()" id="verify-otp-btn">Verify OTP</button>
                 
                 <div style="text-align: center;">
                     <button class="resend-btn" onclick="resendOTP()" id="resendOtpBtn" disabled>Resend OTP</button>
                 </div>
 
-                <div class="back-link" onclick="backToPhone()">← Back</div>
+                <div class="back-link" onclick="backToPhone()">← Back to login</div>
             </div>
 
             <!-- Email Login -->
@@ -883,95 +931,74 @@
 
                 <button class="btn-google" onclick="googleLogin()">
                     <i class="fab fa-google"></i>
-                    Google
+                    Continue with Google
                 </button>
             </div>
 
-            <div id="login-message"></div>
+            <div id="login-message" style="padding: 0 20px;"></div>
         </div>
 
         <!-- Main App -->
         <div id="main-app">
-            <!-- Chats View -->
-            <div id="chats-view">
-                <div class="app-header">
-                    <h2>NS CHAT</h2>
-                    <div class="header-icons">
-                        <i class="fas fa-camera"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                    </div>
+            <!-- Header -->
+            <div class="app-header" id="main-header">
+                <h2 id="header-title">NS CHAT</h2>
+                <div class="header-icons">
+                    <i class="fas fa-camera"></i>
+                    <i class="fas fa-ellipsis-v"></i>
                 </div>
-
-                <div class="search-bar">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="search-chats" placeholder="Search...">
-                    </div>
-                </div>
-
-                <div id="chats-list" style="overflow-y: auto; height: calc(100vh - 180px);"></div>
             </div>
 
-            <!-- Users View -->
-            <div id="users-view">
-                <div class="app-header">
-                    <h2>Users</h2>
-                    <div class="header-icons">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search...">
                 </div>
-
-                <div class="search-bar">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="search-users" placeholder="Find users...">
-                    </div>
-                </div>
-
-                <div id="users-list" style="overflow-y: auto; height: calc(100vh - 180px);"></div>
             </div>
 
-            <!-- Profile View -->
-            <div id="profile-view">
-                <div class="profile-header">
-                    <i class="fas fa-arrow-left back-btn" onclick="showChatsView()"></i>
-                    <h3>Profile</h3>
+            <!-- Content Area -->
+            <div class="content-area" id="content-area">
+                <!-- Chats View -->
+                <div id="chats-view">
+                    <div id="chats-list"></div>
                 </div>
 
-                <div class="profile-content">
-                    <div class="profile-avatar-section">
-                        <div class="profile-avatar" id="profile-avatar">NS</div>
-                        <h2 id="profile-name"></h2>
-                    </div>
+                <!-- Users View -->
+                <div id="users-view" style="display: none;">
+                    <div id="users-list"></div>
+                </div>
 
-                    <div class="profile-field" onclick="editStatus()">
-                        <label>Status</label>
-                        <div class="value">
-                            <span id="profile-status"></span>
-                            <i class="fas fa-pen"></i>
+                <!-- Profile View -->
+                <div id="profile-view" style="display: none;">
+                    <div class="profile-view">
+                        <div class="profile-header-section">
+                            <div class="profile-avatar" id="profile-avatar">NS</div>
+                            <h2 class="profile-name" id="profile-name"></h2>
+                        </div>
+
+                        <div class="profile-field" onclick="editStatus()">
+                            <label>Status</label>
+                            <div class="value">
+                                <span id="profile-status">Hey there! I am using NS CHAT</span>
+                                <i class="fas fa-pen"></i>
+                            </div>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Phone</label>
+                            <div class="value" id="profile-phone"></div>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Email</label>
+                            <div class="value" id="profile-email"></div>
                         </div>
                     </div>
-
-                    <div class="profile-field">
-                        <label>Phone</label>
-                        <div class="value" id="profile-phone"></div>
-                    </div>
-
-                    <div class="profile-field">
-                        <label>Email</label>
-                        <div class="value" id="profile-email"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings View -->
-            <div id="settings-view">
-                <div class="profile-header">
-                    <i class="fas fa-arrow-left back-btn" onclick="showChatsView()"></i>
-                    <h3>Settings</h3>
                 </div>
 
-                <div class="profile-content">
+                <!-- Settings View -->
+                <div id="settings-view" style="display: none;">
                     <div class="settings-section">
                         <div class="settings-title">Account</div>
                         <div class="settings-item" onclick="editName()">
@@ -996,49 +1023,15 @@
                         <div class="settings-item">
                             <i class="fas fa-bell"></i>
                             <span>Notifications</span>
-                            <span class="value">On</span>
+                            <span class="value">Enabled</span>
                         </div>
                     </div>
 
-                    <div class="settings-section">
-                        <div class="settings-title">Privacy</div>
-                        <div class="settings-item">
-                            <i class="fas fa-lock"></i>
-                            <span>Last Seen</span>
-                            <span class="value">Everyone</span>
-                        </div>
+                    <div style="padding: 20px;">
+                        <button class="btn-primary" onclick="logout()" style="background: var(--danger);">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
                     </div>
-
-                    <button class="btn-primary" onclick="logout()" style="margin-top: 20px;">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </div>
-
-            <!-- Chat View -->
-            <div id="chat-view">
-                <div class="chat-header">
-                    <i class="fas fa-arrow-left back-btn" onclick="showChatsView()"></i>
-                    <div class="chat-header-info">
-                        <h3 id="chat-user-name">Loading...</h3>
-                        <p id="chat-user-status">...</p>
-                    </div>
-                    <div class="chat-header-actions">
-                        <i class="fas fa-phone"></i>
-                        <i class="fas fa-video"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                    </div>
-                </div>
-
-                <div id="chat-messages"></div>
-
-                <div class="chat-input-area">
-                    <i class="fas fa-smile"></i>
-                    <i class="fas fa-paperclip"></i>
-                    <input type="text" id="message-input" placeholder="Type a message" onkeypress="handleTyping(event)">
-                    <button class="send-btn" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
                 </div>
             </div>
 
@@ -1062,6 +1055,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Chat View -->
+        <div id="chat-view">
+            <div class="chat-header">
+                <i class="fas fa-arrow-left back-btn" onclick="closeChat()"></i>
+                <div class="chat-header-info">
+                    <h3 id="chat-user-name">Loading...</h3>
+                    <p id="chat-user-status">...</p>
+                </div>
+                <div class="chat-header-actions">
+                    <i class="fas fa-phone"></i>
+                    <i class="fas fa-video"></i>
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+            </div>
+
+            <div id="chat-messages"></div>
+
+            <div class="chat-input-area">
+                <i class="fas fa-smile"></i>
+                <i class="fas fa-paperclip"></i>
+                <input type="text" id="message-input" placeholder="Type a message" onkeypress="handleTyping(event)">
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Edit Modal -->
@@ -1082,16 +1102,16 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // ==================== FIREBASE CONFIG ====================
+        // ==================== YOUR FIREBASE CONFIG ====================
         const firebaseConfig = {
-  apiKey: "AIzaSyD6PdODoYg_jhRfd9ZEZ72ftlvjZwAyxSg",
-  authDomain: "ns-chat-b0965.firebaseapp.com",
-  projectId: "ns-chat-b0965",
-  storageBucket: "ns-chat-b0965.firebasestorage.app",
-  messagingSenderId: "777022101127",
-  appId: "1:777022101127:web:a861ac69d3cbfeb3028a22",
-  measurementId: "G-LEF0GC4XRW"
-};
+            apiKey: "AIzaSyD6PdODoYg_jhRfd9ZEZ72ftlvjZwAyxSg",
+            authDomain: "ns-chat-b0965.firebaseapp.com",
+            projectId: "ns-chat-b0965",
+            storageBucket: "ns-chat-b0965.firebasestorage.app",
+            messagingSenderId: "777022101127",
+            appId: "1:777022101127:web:a861ac69d3cbfeb3028a22",
+            measurementId: "G-LEF0GC4XRW"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1100,6 +1120,9 @@
 
         // Enable offline persistence
         db.enablePersistence().catch(err => console.log('Persistence error:', err));
+
+        // Set language for OTP
+        auth.useDeviceLanguage();
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
@@ -1110,16 +1133,17 @@
         let typingTimeout = null;
         let otpTimer = 30;
         let timerInterval = null;
-        let pendingName = '';
-        let pendingPhone = '';
+        let confirmationResult = null;
         let currentEditField = '';
 
         // ==================== AUTH STATE ====================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                console.log('User logged in:', user.uid);
                 currentUser = user;
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('main-app').style.display = 'flex';
+                document.getElementById('chat-view').style.display = 'none';
                 
                 await saveUserToFirestore(user);
                 await loadUserData();
@@ -1129,9 +1153,11 @@
                 
                 showChatsView();
             } else {
+                console.log('User logged out');
                 currentUser = null;
-                document.getElementById('login-screen').style.display = 'block';
+                document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('main-app').style.display = 'none';
+                document.getElementById('chat-view').style.display = 'none';
                 
                 if (messagesUnsubscribe) messagesUnsubscribe();
                 clearLoginFields();
@@ -1144,30 +1170,41 @@
             document.getElementById('email-name').value = '';
             document.getElementById('email').value = '';
             document.getElementById('password').value = '';
+            
+            // Clear OTP inputs
+            for (let i = 1; i <= 6; i++) {
+                const otp = document.getElementById(`otp${i}`);
+                if (otp) otp.value = '';
+            }
         }
 
-        // ==================== SAVE USER ====================
+        // ==================== SAVE USER TO FIRESTORE ====================
         async function saveUserToFirestore(user) {
             const userRef = db.collection('users').doc(user.uid);
             const doc = await userRef.get();
             
             if (!doc.exists) {
-                const name = pendingName || user.displayName || user.email?.split('@')[0] || 'User';
+                // Get name from input or display name
+                const name = document.getElementById('name')?.value || 
+                            document.getElementById('email-name')?.value || 
+                            user.displayName || 
+                            user.email?.split('@')[0] || 
+                            'User';
                 
-                await userRef.set({
+                const userData = {
                     uid: user.uid,
                     name: name,
                     email: user.email || '',
-                    phone: user.phoneNumber || pendingPhone || '',
+                    phone: user.phoneNumber || '',
                     avatar: name.charAt(0).toUpperCase(),
                     status: 'Hey there! I am using NS CHAT',
                     online: true,
                     lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                };
                 
-                pendingName = '';
-                pendingPhone = '';
+                await userRef.set(userData);
+                console.log('New user created:', name);
             } else {
                 await userRef.update({
                     online: true,
@@ -1199,7 +1236,7 @@
             db.collection('users').doc(currentUser.uid).update({
                 online: status,
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }).catch(err => console.log('Status update error:', err));
         }
 
         window.addEventListener('beforeunload', () => {
@@ -1221,16 +1258,24 @@
                     const usersList = document.getElementById('users-list');
                     usersList.innerHTML = '';
                     
+                    if (snapshot.empty) {
+                        usersList.innerHTML = '<div class="no-data">No other users found</div>';
+                        return;
+                    }
+                    
                     snapshot.forEach((doc) => {
                         const user = doc.data();
                         usersList.appendChild(createUserItem(user));
                     });
+                }, (error) => {
+                    console.log('Load users error:', error);
                 });
         }
 
         function createUserItem(user) {
             const div = document.createElement('div');
             div.className = 'chat-item';
+            div.setAttribute('data-userid', user.uid);
             div.innerHTML = `
                 <div class="chat-avatar">
                     ${user.avatar || user.name.charAt(0).toUpperCase()}
@@ -1256,6 +1301,11 @@
                     const chatsList = document.getElementById('chats-list');
                     chatsList.innerHTML = '';
                     
+                    if (snapshot.empty) {
+                        chatsList.innerHTML = '<div class="no-data">No chats yet. Go to Users tab to start chatting.</div>';
+                        return;
+                    }
+                    
                     for (const doc of snapshot.docs) {
                         const chat = doc.data();
                         const otherUserId = chat.participants.find(id => id !== currentUser.uid);
@@ -1265,17 +1315,25 @@
                             chatsList.appendChild(createChatItem(chat, otherUser, doc.id));
                         }
                     }
+                }, (error) => {
+                    console.log('Load chats error:', error);
                 });
         }
 
         async function getUserData(userId) {
-            const doc = await db.collection('users').doc(userId).get();
-            return doc.exists ? doc.data() : null;
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                return doc.exists ? doc.data() : null;
+            } catch (error) {
+                console.log('Get user data error:', error);
+                return null;
+            }
         }
 
         function createChatItem(chat, user, chatId) {
             const div = document.createElement('div');
             div.className = 'chat-item';
+            div.setAttribute('data-chatid', chatId);
             div.innerHTML = `
                 <div class="chat-avatar">
                     ${user.avatar || user.name.charAt(0).toUpperCase()}
@@ -1299,33 +1357,38 @@
         async function startChat(user) {
             if (!currentUser) return;
             
-            const chatsRef = db.collection('chats');
-            const snapshot = await chatsRef
-                .where('participants', 'array-contains', currentUser.uid)
-                .get();
-            
-            let existingChatId = null;
-            
-            snapshot.forEach((doc) => {
-                const chat = doc.data();
-                if (chat.participants.includes(user.uid)) {
-                    existingChatId = doc.id;
-                }
-            });
-            
-            if (existingChatId) {
-                openChat(user, existingChatId);
-            } else {
-                const newChat = {
-                    participants: [currentUser.uid, user.uid],
-                    lastMessage: '',
-                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastMessageStatus: 'sent',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
+            try {
+                const chatsRef = db.collection('chats');
+                const snapshot = await chatsRef
+                    .where('participants', 'array-contains', currentUser.uid)
+                    .get();
                 
-                const doc = await chatsRef.add(newChat);
-                openChat(user, doc.id);
+                let existingChatId = null;
+                
+                snapshot.forEach((doc) => {
+                    const chat = doc.data();
+                    if (chat.participants.includes(user.uid)) {
+                        existingChatId = doc.id;
+                    }
+                });
+                
+                if (existingChatId) {
+                    openChat(user, existingChatId);
+                } else {
+                    const newChat = {
+                        participants: [currentUser.uid, user.uid],
+                        lastMessage: '',
+                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastMessageStatus: 'sent',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    const doc = await chatsRef.add(newChat);
+                    openChat(user, doc.id);
+                }
+            } catch (error) {
+                console.log('Start chat error:', error);
+                showMessage('Failed to start chat: ' + error.message, 'error');
             }
         }
 
@@ -1336,21 +1399,27 @@
             document.getElementById('chat-user-name').textContent = user.name;
             document.getElementById('chat-user-status').textContent = user.online ? 'Online' : 'Offline';
             
-            document.getElementById('chats-view').style.display = 'none';
-            document.getElementById('users-view').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'none';
-            document.getElementById('settings-view').style.display = 'none';
+            document.getElementById('main-app').style.display = 'none';
             document.getElementById('chat-view').style.display = 'flex';
             
             loadMessages(chatId);
         }
 
-        function showChatsView() {
+        function closeChat() {
             document.getElementById('chat-view').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+            
+            if (messagesUnsubscribe) {
+                messagesUnsubscribe();
+            }
+        }
+
+        function showChatsView() {
             document.getElementById('chats-view').style.display = 'block';
             document.getElementById('users-view').style.display = 'none';
             document.getElementById('profile-view').style.display = 'none';
             document.getElementById('settings-view').style.display = 'none';
+            document.getElementById('header-title').textContent = 'NS CHAT';
             
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.nav-item')[0].classList.add('active');
@@ -1358,7 +1427,9 @@
 
         // ==================== LOAD MESSAGES ====================
         function loadMessages(chatId) {
-            if (messagesUnsubscribe) messagesUnsubscribe();
+            if (messagesUnsubscribe) {
+                messagesUnsubscribe();
+            }
             
             messagesUnsubscribe = db.collection('messages')
                 .where('chatId', '==', chatId)
@@ -1367,6 +1438,11 @@
                     const messagesContainer = document.getElementById('chat-messages');
                     messagesContainer.innerHTML = '';
                     
+                    if (snapshot.empty) {
+                        messagesContainer.innerHTML = '<div style="text-align: center; color: #8696a0; padding: 20px;">No messages yet. Say hi!</div>';
+                        return;
+                    }
+                    
                     snapshot.forEach((doc) => {
                         const message = doc.data();
                         displayMessage(message);
@@ -1374,6 +1450,8 @@
                     
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                     markMessagesAsRead(chatId);
+                }, (error) => {
+                    console.log('Load messages error:', error);
                 });
         }
 
@@ -1410,7 +1488,7 @@
                     snapshot.forEach((doc) => {
                         doc.ref.update({ status: 'delivered' });
                     });
-                });
+                }).catch(err => console.log('Mark read error:', err));
         }
 
         // ==================== SEND MESSAGE ====================
@@ -1420,24 +1498,30 @@
             
             if (!text || !currentChatUser || !currentChatId) return;
             
-            const message = {
-                chatId: currentChatId,
-                senderId: currentUser.uid,
-                receiverId: currentChatUser.uid,
-                text: text,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'sent'
-            };
-            
-            await db.collection('messages').add(message);
-            
-            await db.collection('chats').doc(currentChatId).update({
-                lastMessage: text,
-                lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                lastMessageStatus: 'sent'
-            });
-            
-            input.value = '';
+            try {
+                const message = {
+                    chatId: currentChatId,
+                    senderId: currentUser.uid,
+                    receiverId: currentChatUser.uid,
+                    text: text,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'sent'
+                };
+                
+                await db.collection('messages').add(message);
+                
+                await db.collection('chats').doc(currentChatId).update({
+                    lastMessage: text,
+                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastMessageStatus: 'sent'
+                });
+                
+                input.value = '';
+                
+            } catch (error) {
+                console.log('Send message error:', error);
+                alert('Failed to send message');
+            }
         }
 
         function handleTyping(event) {
@@ -1454,52 +1538,123 @@
                 isTyping: true,
                 userId: currentUser.uid,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }).catch(err => console.log('Typing error:', err));
             
             if (typingTimeout) clearTimeout(typingTimeout);
             
             typingTimeout = setTimeout(() => {
-                typingRef.delete();
+                typingRef.delete().catch(err => console.log('Typing delete error:', err));
             }, 2000);
         }
 
-        // ==================== PHONE AUTH ====================
+        // ==================== PHONE AUTH (REAL) ====================
+        let recaptchaVerifier = null;
+
         function sendOTP() {
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
             
-            if (!name || !phone || phone.length !== 10) {
-                alert('Please enter valid name and 10-digit phone number');
+            if (!name) {
+                showMessage('Please enter your name', 'error');
                 return;
             }
             
-            pendingName = name;
-            pendingPhone = '+91' + phone;
-            document.getElementById('display-phone').textContent = pendingPhone;
+            if (!phone || phone.length !== 10) {
+                showMessage('Please enter a valid 10-digit phone number', 'error');
+                return;
+            }
             
-            document.getElementById('phone-login').classList.remove('active');
-            document.getElementById('otp-verification').classList.add('active');
+            if (!/^\d{10}$/.test(phone)) {
+                showMessage('Phone number must contain only digits', 'error');
+                return;
+            }
             
-            startOTPTimer();
+            const phoneNumber = '+91' + phone;
+            document.getElementById('display-phone').textContent = phoneNumber;
+            
+            // Store name for later use
+            sessionStorage.setItem('pendingName', name);
+            
+            // Disable button to prevent multiple clicks
+            const sendBtn = document.getElementById('send-otp-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+            
+            // Create reCAPTCHA verifier
+            if (!recaptchaVerifier) {
+                recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                    'size': 'invisible',
+                    'callback': (response) => {
+                        console.log('reCAPTCHA solved');
+                    }
+                });
+            }
+            
+            // Send OTP
+            auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+                .then((result) => {
+                    confirmationResult = result;
+                    
+                    // Switch to OTP screen
+                    document.getElementById('phone-login').classList.remove('active');
+                    document.getElementById('otp-verification').classList.add('active');
+                    
+                    // Start timer
+                    startOTPTimer();
+                    
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send OTP';
+                    
+                    showMessage('OTP sent successfully!', 'success');
+                })
+                .catch((error) => {
+                    console.log('OTP error:', error);
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send OTP';
+                    showMessage('Failed to send OTP: ' + error.message, 'error');
+                });
         }
 
         function verifyOTP() {
             const otp = getOTP();
             
-            if (otp === '123456') {
-                // Demo login - in production, use Firebase Phone Auth
-                const mockUser = {
-                    uid: 'user_' + Date.now(),
-                    displayName: pendingName,
-                    phoneNumber: pendingPhone,
-                    email: ''
-                };
-                
-                saveDemoUser(mockUser);
-                clearInterval(timerInterval);
-            } else {
-                alert('Invalid OTP. Try 123456');
+            if (otp.length !== 6) {
+                showMessage('Please enter 6-digit OTP', 'error');
+                return;
             }
+            
+            if (!confirmationResult) {
+                showMessage('Please request OTP first', 'error');
+                return;
+            }
+            
+            const verifyBtn = document.getElementById('verify-otp-btn');
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+            
+            confirmationResult.confirm(otp)
+                .then((result) => {
+                    // Get name from session storage
+                    const name = sessionStorage.getItem('pendingName') || 'User';
+                    
+                    // Update user profile with name
+                    if (result.user) {
+                        result.user.updateProfile({
+                            displayName: name
+                        }).catch(err => console.log('Profile update error:', err));
+                    }
+                    
+                    sessionStorage.removeItem('pendingName');
+                    
+                    clearInterval(timerInterval);
+                    showMessage('Login successful!', 'success');
+                })
+                .catch((error) => {
+                    console.log('Verification error:', error);
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify OTP';
+                    showMessage('Invalid OTP: ' + error.message, 'error');
+                });
         }
 
         function getOTP() {
@@ -1510,40 +1665,42 @@
             return otp;
         }
 
-        function saveDemoUser(user) {
-            const userRef = db.collection('users').doc(user.uid);
+        function resendOTP() {
+            if (!confirmationResult) {
+                showMessage('Please request OTP again', 'error');
+                return;
+            }
             
-            userRef.set({
-                uid: user.uid,
-                name: user.displayName,
-                phone: user.phoneNumber,
-                email: '',
-                avatar: user.displayName.charAt(0).toUpperCase(),
-                status: 'Hey there! I am using NS CHAT',
-                online: true,
-                lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                currentUser = user;
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                loadUserData();
-                loadChats();
-                loadUsers();
-                showChatsView();
-            });
+            // Re-send OTP using the same phone number
+            const phoneNumber = document.getElementById('display-phone').textContent;
+            
+            auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+                .then((result) => {
+                    confirmationResult = result;
+                    otpTimer = 30;
+                    startOTPTimer();
+                    showMessage('OTP resent!', 'success');
+                })
+                .catch((error) => {
+                    console.log('Resend error:', error);
+                    showMessage('Failed to resend OTP: ' + error.message, 'error');
+                });
         }
 
         function startOTPTimer() {
             const timerEl = document.getElementById('timer');
             const resendBtn = document.getElementById('resendOtpBtn');
             
+            if (timerInterval) clearInterval(timerInterval);
+            
             resendBtn.disabled = true;
             otpTimer = 30;
             
             timerInterval = setInterval(() => {
                 otpTimer--;
-                timerEl.textContent = `00:${otpTimer.toString().padStart(2, '0')}`;
+                const minutes = Math.floor(otpTimer / 60);
+                const seconds = otpTimer % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
                 if (otpTimer <= 0) {
                     clearInterval(timerInterval);
@@ -1551,11 +1708,6 @@
                     timerEl.textContent = '00:30';
                 }
             }, 1000);
-        }
-
-        function resendOTP() {
-            otpTimer = 30;
-            startOTPTimer();
         }
 
         function backToPhone() {
@@ -1570,41 +1722,72 @@
             }
         }
 
-        // ==================== GOOGLE AUTH ====================
-        async function googleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            try {
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                alert('Google login failed: ' + error.message);
+        function handleOtpKeyPress(event) {
+            // Allow only numbers
+            const charCode = event.which ? event.which : event.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                event.preventDefault();
             }
         }
 
-        // ==================== EMAIL AUTH ====================
+        // ==================== GOOGLE AUTH (REAL) ====================
+        async function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            try {
+                await auth.signInWithPopup(provider);
+                showMessage('Google login successful!', 'success');
+            } catch (error) {
+                console.log('Google login error:', error);
+                showMessage('Google login failed: ' + error.message, 'error');
+            }
+        }
+
+        // ==================== EMAIL AUTH (REAL) ====================
         async function emailSignup() {
             const name = document.getElementById('email-name').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
-            if (!name || !email || !password) {
-                alert('Please fill all fields');
+            if (!name) {
+                showMessage('Please enter your name', 'error');
+                return;
+            }
+            
+            if (!email) {
+                showMessage('Please enter your email', 'error');
+                return;
+            }
+            
+            if (!password || password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
                 return;
             }
             
             try {
+                // Try to sign in
                 let userCredential;
                 try {
                     userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    showMessage('Login successful!', 'success');
                 } catch (error) {
                     if (error.code === 'auth/user-not-found') {
+                        // Create new user
                         userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                        pendingName = name;
+                        
+                        // Update profile with name
+                        await userCredential.user.updateProfile({
+                            displayName: name
+                        });
+                        
+                        showMessage('Account created successfully!', 'success');
                     } else {
                         throw error;
                     }
                 }
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.log('Email auth error:', error);
+                showMessage('Authentication failed: ' + error.message, 'error');
             }
         }
 
@@ -1626,29 +1809,46 @@
         async function saveEdit() {
             const newValue = document.getElementById('modal-input').value.trim();
             
-            if (!newValue) return;
-            
-            const updateData = {};
-            if (currentEditField === 'status') {
-                updateData.status = newValue;
-            } else if (currentEditField === 'name') {
-                updateData.name = newValue;
-                updateData.avatar = newValue.charAt(0).toUpperCase();
+            if (!newValue) {
+                alert('Please enter a value');
+                return;
             }
             
-            await db.collection('users').doc(currentUser.uid).update(updateData);
-            await loadUserData();
-            closeModal();
+            try {
+                const updateData = {};
+                
+                if (currentEditField === 'status') {
+                    updateData.status = newValue;
+                } else if (currentEditField === 'name') {
+                    updateData.name = newValue;
+                    updateData.avatar = newValue.charAt(0).toUpperCase();
+                }
+                
+                await db.collection('users').doc(currentUser.uid).update(updateData);
+                await loadUserData();
+                closeModal();
+                showMessage('Updated successfully!', 'success');
+                
+            } catch (error) {
+                console.log('Update error:', error);
+                alert('Failed to update: ' + error.message);
+            }
         }
 
         function closeModal() {
             document.getElementById('edit-modal').classList.remove('active');
+            document.getElementById('modal-input').value = '';
         }
 
         // ==================== LOGOUT ====================
         async function logout() {
-            await updateOnlineStatus(false);
-            await auth.signOut();
+            try {
+                await updateOnlineStatus(false);
+                await auth.signOut();
+            } catch (error) {
+                console.log('Logout error:', error);
+                alert('Logout failed: ' + error.message);
+            }
         }
 
         // ==================== VIEW FUNCTIONS ====================
@@ -1657,9 +1857,18 @@
             document.getElementById('users-view').style.display = 'none';
             document.getElementById('profile-view').style.display = 'none';
             document.getElementById('settings-view').style.display = 'none';
-            document.getElementById('chat-view').style.display = 'none';
             
             document.getElementById(view + '-view').style.display = 'block';
+            
+            if (view === 'chats') {
+                document.getElementById('header-title').textContent = 'NS CHAT';
+            } else if (view === 'users') {
+                document.getElementById('header-title').textContent = 'Users';
+            } else if (view === 'profile') {
+                document.getElementById('header-title').textContent = 'Profile';
+            } else if (view === 'settings') {
+                document.getElementById('header-title').textContent = 'Settings';
+            }
             
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             if (view === 'chats') document.querySelectorAll('.nav-item')[0].classList.add('active');
@@ -1692,18 +1901,21 @@
             }
         }
 
-        // Search
-        document.getElementById('search-users')?.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('#users-list .chat-item').forEach(item => {
-                const name = item.querySelector('.chat-name')?.textContent.toLowerCase() || '';
-                item.style.display = name.includes(term) ? 'flex' : 'none';
-            });
-        });
+        function showMessage(msg, type) {
+            const messageDiv = document.getElementById('login-message');
+            messageDiv.textContent = msg;
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 5000);
+        }
 
-        document.getElementById('search-chats')?.addEventListener('input', (e) => {
+        // Search functionality
+        document.getElementById('search-input')?.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            document.querySelectorAll('#chats-list .chat-item').forEach(item => {
+            
+            document.querySelectorAll('.chat-item').forEach(item => {
                 const name = item.querySelector('.chat-name')?.textContent.toLowerCase() || '';
                 item.style.display = name.includes(term) ? 'flex' : 'none';
             });
@@ -1717,7 +1929,7 @@
         });
 
         // Initialize
-        console.log('NS CHAT - Mobile Optimized Ready');
+        console.log('NS CHAT - Real Firebase Authentication Ready');
     </script>
 </body>
 </html>
