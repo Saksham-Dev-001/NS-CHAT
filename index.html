@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NS CHAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NS CHAT - Real Time Messaging</title>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -11,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -32,18 +32,21 @@
         }
 
         body {
-            background: var(--bg-dark);
+            background: #111b21;
             height: 100vh;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #app {
             width: 100%;
+            max-width: 450px;
             height: 100vh;
-            background: var(--bg-chat);
+            background: var(--bg-dark);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
             position: relative;
+            overflow: hidden;
         }
 
         /* ========== LOGIN SCREEN ========== */
@@ -52,8 +55,7 @@
             height: 100vh;
             background: white;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
 
         .login-header {
@@ -73,9 +75,13 @@
             margin-bottom: 10px;
         }
 
+        .login-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
         .login-tabs {
             display: flex;
-            background: white;
             border-bottom: 2px solid #e9edef;
         }
 
@@ -84,9 +90,8 @@
             padding: 16px;
             text-align: center;
             font-weight: 600;
-            color: #667781;
             cursor: pointer;
-            font-size: 16px;
+            transition: all 0.3s;
         }
 
         .login-tab.active {
@@ -94,14 +99,12 @@
             border-bottom: 3px solid var(--primary);
         }
 
-        .login-form {
-            display: none;
-            padding: 25px 20px;
-            flex: 1;
+        .login-tab:not(.active) {
+            color: #667781;
         }
 
-        .login-form.active {
-            display: block;
+        .login-form {
+            padding: 25px 20px;
         }
 
         .form-group {
@@ -144,7 +147,6 @@
             font-weight: 600;
             color: var(--primary);
             text-align: center;
-            font-size: 16px;
         }
 
         .btn-primary {
@@ -223,6 +225,40 @@
         }
 
         /* OTP Verification */
+        #otp-screen {
+            display: none;
+            padding: 20px;
+            height: 100vh;
+            background: white;
+        }
+
+        .otp-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .otp-header h3 {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .otp-header p {
+            color: #667781;
+            font-size: 14px;
+        }
+
         .otp-container {
             display: flex;
             gap: 8px;
@@ -259,7 +295,7 @@
             font-weight: 600;
             cursor: pointer;
             padding: 10px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .resend-btn:disabled {
@@ -267,20 +303,12 @@
             cursor: not-allowed;
         }
 
-        .back-link {
-            text-align: center;
-            color: var(--primary);
-            cursor: pointer;
-            padding: 15px;
-            font-size: 16px;
-        }
-
         /* ========== MAIN APP ========== */
         #main-app {
             display: none;
             width: 100%;
             height: 100vh;
-            background: var(--bg-chat);
+            background: var(--bg-dark);
             flex-direction: column;
         }
 
@@ -424,205 +452,6 @@
             margin-left: 10px;
         }
 
-        /* ========== CHAT VIEW ========== */
-        #chat-view {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg-chat);
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: var(--primary);
-            color: white;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            height: 60px;
-            flex-shrink: 0;
-        }
-
-        .back-btn {
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .chat-header-info {
-            flex: 1;
-        }
-
-        .chat-header-info h3 {
-            font-size: 18px;
-            margin-bottom: 3px;
-            font-weight: 500;
-        }
-
-        .chat-header-info p {
-            font-size: 13px;
-            opacity: 0.8;
-        }
-
-        .chat-header-actions {
-            display: flex;
-            gap: 20px;
-        }
-
-        .chat-header-actions i {
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        #chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b141a" opacity="0.4"/></svg>');
-        }
-
-        .message {
-            max-width: 80%;
-            margin-bottom: 10px;
-            padding: 10px 15px;
-            border-radius: 12px;
-            position: relative;
-            clear: both;
-            font-size: 15px;
-            line-height: 1.4;
-            word-wrap: break-word;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.sent {
-            background: var(--message-sent);
-            color: white;
-            float: right;
-            border-radius: 12px 12px 0 12px;
-        }
-
-        .message.received {
-            background: var(--message-received);
-            color: white;
-            float: left;
-            border-radius: 12px 12px 12px 0;
-        }
-
-        .message-time {
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-            margin-left: 8px;
-            display: inline-block;
-        }
-
-        /* Message Input Area - THIS WAS MISSING */
-        .chat-input-area {
-            background: var(--bg-sidebar);
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            background: #2a3942;
-            border: none;
-            border-radius: 25px;
-            padding: 12px 15px;
-            color: var(--text-primary);
-            font-size: 16px;
-        }
-
-        .chat-input-area input:focus {
-            outline: none;
-        }
-
-        .chat-input-area input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .chat-input-area i {
-            color: var(--text-secondary);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .chat-input-area i:hover {
-            color: var(--text-primary);
-        }
-
-        .send-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .send-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .send-btn i {
-            color: white;
-            font-size: 18px;
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            background: var(--bg-sidebar);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            z-index: 100;
-            flex-shrink: 0;
-        }
-
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 5px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        .nav-item span {
-            font-size: 11px;
-        }
-
         /* Profile View */
         .profile-view {
             padding: 20px;
@@ -721,6 +550,266 @@
             color: var(--text-secondary);
         }
 
+        /* Bottom Navigation */
+        .bottom-nav {
+            background: var(--bg-sidebar);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            height: 60px;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 5px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .nav-item span {
+            font-size: 11px;
+        }
+
+        /* ========== CHAT VIEW ========== */
+        #chat-view {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-chat);
+            flex-direction: column;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 200;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .chat-header .back-btn {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .chat-header .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .chat-user-info {
+            flex: 1;
+        }
+
+        .chat-user-info h3 {
+            font-size: 16px;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .chat-user-info p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-header-actions i {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .chat-header-actions i:hover {
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b141a" opacity="0.4"/></svg>');
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            position: relative;
+            font-size: 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.sent {
+            background: var(--message-sent);
+            color: white;
+            align-self: flex-end;
+            border-radius: 12px 12px 0 12px;
+        }
+
+        .message.received {
+            background: var(--message-received);
+            color: white;
+            align-self: flex-start;
+            border-radius: 12px 12px 12px 0;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        .chat-input-area {
+            background: var(--bg-sidebar);
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: #2a3942;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .chat-input-area input:focus {
+            outline: none;
+        }
+
+        .chat-input-area input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .chat-input-area i {
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chat-input-area i:hover {
+            color: var(--text-primary);
+        }
+
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .send-btn i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            background: var(--message-received);
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8696a0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -796,7 +885,7 @@
         }
 
         .error-message, .success-message {
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
             border-radius: 8px;
             text-align: center;
@@ -813,34 +902,13 @@
             color: var(--success);
         }
 
-        .typing-indicator {
-            padding: 8px 12px;
-            background: var(--message-received);
-            border-radius: 18px;
-            width: fit-content;
-            margin-bottom: 10px;
-            clear: both;
+        .fa-spinner {
+            animation: spin 1s linear infinite;
         }
 
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #8696a0;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .no-data {
@@ -849,22 +917,8 @@
             padding: 40px 20px;
         }
 
-        /* Welcome Screen */
-        .welcome-screen {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 40px 20px;
-        }
-
-        .welcome-screen i {
-            font-size: 60px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .welcome-screen h3 {
-            color: var(--text-primary);
-            margin-bottom: 10px;
+        #email-login {
+            display: none;
         }
     </style>
 </head>
@@ -872,23 +926,26 @@
     <div id="app">
         <!-- Login Screen -->
         <div id="login-screen">
+            <!-- Green Header -->
             <div class="login-header">
                 <i class="fab fa-whatsapp"></i>
                 <h1>NS CHAT</h1>
                 <p>Connect with your world instantly</p>
             </div>
 
+            <!-- Login Tabs -->
             <div class="login-tabs">
-                <div class="login-tab active" onclick="switchLoginTab('phone')">Phone</div>
-                <div class="login-tab" onclick="switchLoginTab('email')">Email</div>
+                <div class="login-tab active" id="phone-tab">Phone</div>
+                <div class="login-tab" id="email-tab">Email</div>
             </div>
 
-            <!-- Phone Login -->
-            <div id="phone-login" class="login-form active">
+            <!-- Phone Login Form -->
+            <div id="phone-login" class="login-form">
                 <div class="form-group">
                     <label>Your Name</label>
                     <input type="text" id="name" placeholder="Enter your full name">
                 </div>
+
                 <div class="form-group">
                     <label>Phone Number (India)</label>
                     <div class="phone-input">
@@ -896,79 +953,85 @@
                         <input type="tel" id="phone" placeholder="9876543210" maxlength="10">
                     </div>
                 </div>
+
+                <!-- reCAPTCHA container -->
                 <div id="recaptcha-container"></div>
-                <button class="btn-primary" onclick="sendOTP()" id="send-otp-btn">Send OTP</button>
+
+                <button class="btn-primary" id="send-otp-btn">Send OTP</button>
 
                 <div class="divider">
                     <span>or</span>
                 </div>
 
-                <button class="btn-google" onclick="googleLogin()">
+                <button class="btn-google" id="google-btn">
                     <i class="fab fa-google"></i>
                     Continue with Google
                 </button>
             </div>
 
-            <!-- OTP Verification -->
-            <div id="otp-verification" class="login-form">
-                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">
-                    Enter the 6-digit code sent to<br>
-                    <strong id="display-phone"></strong>
-                </p>
-                
-                <div class="otp-container">
-                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 1)" onkeypress="handleOtpKeyPress(event)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 2)" onkeypress="handleOtpKeyPress(event)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 3)" onkeypress="handleOtpKeyPress(event)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 4)" onkeypress="handleOtpKeyPress(event)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 5)" onkeypress="handleOtpKeyPress(event)">
-                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="moveToNext(this, 6)" onkeypress="handleOtpKeyPress(event)">
-                </div>
-
-                <div class="timer" id="timer">00:30</div>
-                
-                <button class="btn-primary" onclick="verifyOTP()" id="verify-otp-btn">Verify OTP</button>
-                
-                <div style="text-align: center;">
-                    <button class="resend-btn" onclick="resendOTP()" id="resendOtpBtn" disabled>Resend OTP</button>
-                </div>
-
-                <div class="back-link" onclick="backToPhone()">← Back to login</div>
-            </div>
-
-            <!-- Email Login -->
+            <!-- Email Login Form -->
             <div id="email-login" class="login-form">
                 <div class="form-group">
                     <label>Your Name</label>
                     <input type="text" id="email-name" placeholder="Enter your full name">
                 </div>
+
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="email" placeholder="Enter your email">
                 </div>
+
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" id="password" placeholder="Min 6 characters">
                 </div>
-                <button class="btn-primary" onclick="emailSignup()">Sign Up / Login</button>
+
+                <button class="btn-primary" id="email-signup-btn">Sign Up / Login</button>
 
                 <div class="divider">
                     <span>or</span>
                 </div>
 
-                <button class="btn-google" onclick="googleLogin()">
+                <button class="btn-google" id="google-btn-2">
                     <i class="fab fa-google"></i>
                     Continue with Google
                 </button>
             </div>
 
-            <div id="login-message" style="padding: 0 20px;"></div>
+            <!-- Message Display -->
+            <div id="login-message"></div>
+        </div>
+
+        <!-- OTP Verification Screen -->
+        <div id="otp-screen">
+            <div class="otp-header">
+                <i class="fas fa-arrow-left back-btn" id="back-to-phone"></i>
+                <h3>Enter Verification Code</h3>
+                <p>Code sent to <strong id="display-phone"></strong></p>
+            </div>
+
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" id="otp1">
+                <input type="text" class="otp-input" maxlength="1" id="otp2">
+                <input type="text" class="otp-input" maxlength="1" id="otp3">
+                <input type="text" class="otp-input" maxlength="1" id="otp4">
+                <input type="text" class="otp-input" maxlength="1" id="otp5">
+                <input type="text" class="otp-input" maxlength="1" id="otp6">
+            </div>
+
+            <div class="timer" id="timer">00:30</div>
+            
+            <button class="btn-primary" id="verify-otp-btn">Verify OTP</button>
+            
+            <div style="text-align: center;">
+                <button class="resend-btn" id="resend-otp-btn" disabled>Resend OTP</button>
+            </div>
         </div>
 
         <!-- Main App -->
         <div id="main-app">
             <!-- Header -->
-            <div class="app-header" id="main-header">
+            <div class="app-header">
                 <h2 id="header-title">NS CHAT</h2>
                 <div class="header-icons">
                     <i class="fas fa-camera"></i>
@@ -987,24 +1050,20 @@
             <!-- Content Area -->
             <div class="content-area" id="content-area">
                 <!-- Chats View -->
-                <div id="chats-view">
-                    <div id="chats-list"></div>
-                </div>
+                <div id="chats-view"></div>
 
                 <!-- Users View -->
-                <div id="users-view" style="display: none;">
-                    <div id="users-list"></div>
-                </div>
+                <div id="users-view" style="display: none;"></div>
 
                 <!-- Profile View -->
                 <div id="profile-view" style="display: none;">
                     <div class="profile-view">
                         <div class="profile-header-section">
-                            <div class="profile-avatar" id="profile-avatar">NS</div>
-                            <h2 class="profile-name" id="profile-name"></h2>
+                            <div class="profile-avatar" id="profile-avatar">SS</div>
+                            <h2 class="profile-name" id="profile-name">Loading...</h2>
                         </div>
 
-                        <div class="profile-field" onclick="editStatus()">
+                        <div class="profile-field" id="edit-status">
                             <label>Status</label>
                             <div class="value">
                                 <span id="profile-status">Hey there! I am using NS CHAT</span>
@@ -1014,12 +1073,12 @@
 
                         <div class="profile-field">
                             <label>Phone</label>
-                            <div class="value" id="profile-phone"></div>
+                            <div class="value" id="profile-phone">Loading...</div>
                         </div>
 
                         <div class="profile-field">
                             <label>Email</label>
-                            <div class="value" id="profile-email"></div>
+                            <div class="value" id="profile-email">Loading...</div>
                         </div>
                     </div>
                 </div>
@@ -1028,15 +1087,15 @@
                 <div id="settings-view" style="display: none;">
                     <div class="settings-section">
                         <div class="settings-title">Account</div>
-                        <div class="settings-item" onclick="editName()">
+                        <div class="settings-item" id="edit-name-settings">
                             <i class="fas fa-user"></i>
                             <span>Name</span>
-                            <span class="value" id="settings-name"></span>
+                            <span class="value" id="settings-name">Loading...</span>
                         </div>
-                        <div class="settings-item" onclick="editStatus()">
+                        <div class="settings-item" id="edit-status-settings">
                             <i class="fas fa-smile"></i>
                             <span>Status</span>
-                            <span class="value" id="settings-status"></span>
+                            <span class="value" id="settings-status">Loading...</span>
                         </div>
                     </div>
 
@@ -1054,8 +1113,17 @@
                         </div>
                     </div>
 
+                    <div class="settings-section">
+                        <div class="settings-title">Privacy</div>
+                        <div class="settings-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Last Seen</span>
+                            <span class="value">Everyone</span>
+                        </div>
+                    </div>
+
                     <div style="padding: 20px;">
-                        <button class="btn-primary" onclick="logout()" style="background: var(--danger);">
+                        <button class="btn-primary" id="logout-btn" style="background: var(--danger);">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>
@@ -1064,31 +1132,32 @@
 
             <!-- Bottom Navigation -->
             <div class="bottom-nav">
-                <div class="nav-item active" onclick="switchView('chats')">
+                <div class="nav-item active" id="nav-chats">
                     <i class="fas fa-comment"></i>
                     <span>Chats</span>
                 </div>
-                <div class="nav-item" onclick="switchView('users')">
+                <div class="nav-item" id="nav-users">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                 </div>
-                <div class="nav-item" onclick="switchView('profile')">
+                <div class="nav-item" id="nav-profile">
                     <i class="fas fa-user"></i>
                     <span>Profile</span>
                 </div>
-                <div class="nav-item" onclick="switchView('settings')">
+                <div class="nav-item" id="nav-settings">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </div>
             </div>
         </div>
 
-        <!-- Chat View (Separate) -->
+        <!-- Chat View -->
         <div id="chat-view">
             <div class="chat-header">
-                <i class="fas fa-arrow-left back-btn" onclick="closeChat()"></i>
-                <div class="chat-header-info">
-                    <h3 id="chat-user-name">Saksham Sharma</h3>
+                <i class="fas fa-arrow-left back-btn" id="close-chat"></i>
+                <div class="chat-avatar" id="chat-avatar">AK</div>
+                <div class="chat-user-info">
+                    <h3 id="chat-user-name">Amit Kothari</h3>
                     <p id="chat-user-status">Online</p>
                 </div>
                 <div class="chat-header-actions">
@@ -1099,19 +1168,14 @@
             </div>
 
             <div id="chat-messages">
-                <div class="welcome-screen">
-                    <i class="fas fa-comments"></i>
-                    <h3>No messages yet</h3>
-                    <p>Say hello to start chatting!</p>
-                </div>
+                <!-- Messages will appear here -->
             </div>
 
-            <!-- Message Input Area - NOW VISIBLE -->
             <div class="chat-input-area">
                 <i class="fas fa-smile"></i>
                 <i class="fas fa-paperclip"></i>
-                <input type="text" id="message-input" placeholder="Type a message" onkeypress="handleTyping(event)">
-                <button class="send-btn" onclick="sendMessage()">
+                <input type="text" id="message-input" placeholder="Type a message">
+                <button class="send-btn" id="send-message-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
@@ -1124,8 +1188,8 @@
             <h3 id="modal-title">Edit</h3>
             <input type="text" id="modal-input" placeholder="Enter new value">
             <div class="modal-buttons">
-                <button class="save" onclick="saveEdit()">Save</button>
-                <button class="cancel" onclick="closeModal()">Cancel</button>
+                <button class="save" id="save-edit">Save</button>
+                <button class="cancel" id="cancel-edit">Cancel</button>
             </div>
         </div>
     </div>
@@ -1153,65 +1217,57 @@
         const db = firebase.firestore();
 
         // Enable offline persistence
-        db.enablePersistence().catch(err => console.log('Persistence error:', err));
+        db.enablePersistence().catch(err => {
+            console.log('Persistence error:', err);
+        });
 
-        // Set language for OTP
-        auth.useDeviceLanguage();
+        console.log('✅ Firebase Connected Successfully!');
 
         // ==================== GLOBAL VARIABLES ====================
+        let recaptchaVerifier = null;
+        let confirmationResult = null;
+        let otpTimer = 30;
+        let timerInterval = null;
         let currentUser = null;
         let currentUserData = null;
+        let currentEditField = '';
         let currentChatUser = null;
         let currentChatId = null;
         let messagesUnsubscribe = null;
         let typingTimeout = null;
-        let otpTimer = 30;
-        let timerInterval = null;
-        let confirmationResult = null;
-        let recaptchaVerifier = null;
-        let currentEditField = '';
 
         // ==================== AUTH STATE ====================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                console.log('User logged in:', user.uid);
+                console.log('✅ User logged in:', user.uid);
                 currentUser = user;
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'flex';
-                document.getElementById('chat-view').style.display = 'none';
                 
+                // Save user to Firestore
                 await saveUserToFirestore(user);
+                
+                // Load user data
                 await loadUserData();
+                
+                // Load chats and users
                 loadChats();
                 loadUsers();
+                
+                // Update online status
                 updateOnlineStatus(true);
                 
-                showChatsView();
+                // Show main app
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('otp-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
             } else {
                 console.log('User logged out');
                 currentUser = null;
-                document.getElementById('login-screen').style.display = 'flex';
+                currentUserData = null;
+                document.getElementById('login-screen').style.display = 'block';
                 document.getElementById('main-app').style.display = 'none';
                 document.getElementById('chat-view').style.display = 'none';
-                
-                if (messagesUnsubscribe) messagesUnsubscribe();
-                clearLoginFields();
             }
         });
-
-        function clearLoginFields() {
-            document.getElementById('name').value = '';
-            document.getElementById('phone').value = '';
-            document.getElementById('email-name').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            
-            // Clear OTP inputs
-            for (let i = 1; i <= 6; i++) {
-                const otp = document.getElementById(`otp${i}`);
-                if (otp) otp.value = '';
-            }
-        }
 
         // ==================== SAVE USER TO FIRESTORE ====================
         async function saveUserToFirestore(user) {
@@ -1219,12 +1275,23 @@
             const doc = await userRef.get();
             
             if (!doc.exists) {
-                // Get name from input or display name
-                const name = document.getElementById('name')?.value || 
-                            document.getElementById('email-name')?.value || 
-                            user.displayName || 
-                            user.email?.split('@')[0] || 
-                            'User';
+                // Get name from various sources
+                let name = 'User';
+                
+                if (user.displayName) {
+                    name = user.displayName;
+                } else if (user.email) {
+                    name = user.email.split('@')[0];
+                } else if (user.phoneNumber) {
+                    name = user.phoneNumber.slice(-4);
+                }
+                
+                // Check session storage for pending name
+                const pendingName = sessionStorage.getItem('pendingName');
+                if (pendingName) {
+                    name = pendingName;
+                    sessionStorage.removeItem('pendingName');
+                }
                 
                 const userData = {
                     uid: user.uid,
@@ -1239,35 +1306,58 @@
                 };
                 
                 await userRef.set(userData);
-                console.log('New user created:', name);
+                console.log('✅ New user created:', name);
+                
+                // Immediately load the data we just saved
+                currentUserData = userData;
+                updateProfileUI(userData);
             } else {
-                await userRef.update({
-                    online: true,
-                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                // User exists, get their data
+                currentUserData = doc.data();
+                updateProfileUI(currentUserData);
             }
+        }
+
+        // ==================== UPDATE PROFILE UI ====================
+        function updateProfileUI(data) {
+            if (!data) return;
+            
+            console.log('Updating profile UI with:', data);
+            
+            // Update profile view
+            document.getElementById('profile-name').textContent = data.name || 'User';
+            document.getElementById('profile-avatar').textContent = data.avatar || (data.name ? data.name.charAt(0).toUpperCase() : 'U');
+            document.getElementById('profile-status').textContent = data.status || 'Hey there! I am using NS CHAT';
+            document.getElementById('profile-phone').textContent = data.phone || 'Not provided';
+            document.getElementById('profile-email').textContent = data.email || 'Not provided';
+            
+            // Update settings view
+            document.getElementById('settings-name').textContent = data.name || 'User';
+            document.getElementById('settings-status').textContent = data.status || 'Hey there! I am using NS CHAT';
         }
 
         // ==================== LOAD USER DATA ====================
         async function loadUserData() {
-            const doc = await db.collection('users').doc(currentUser.uid).get();
-            if (doc.exists) {
-                currentUserData = doc.data();
-                const data = currentUserData;
-                
-                document.getElementById('profile-name').textContent = data.name;
-                document.getElementById('profile-avatar').textContent = data.avatar || data.name.charAt(0).toUpperCase();
-                document.getElementById('profile-status').textContent = data.status || 'Hey there!';
-                document.getElementById('profile-phone').textContent = data.phone || 'Not provided';
-                document.getElementById('profile-email').textContent = data.email || 'Not provided';
-                document.getElementById('settings-name').textContent = data.name;
-                document.getElementById('settings-status').textContent = data.status || 'Hey there!';
+            if (!currentUser) return;
+            
+            try {
+                const doc = await db.collection('users').doc(currentUser.uid).get();
+                if (doc.exists) {
+                    currentUserData = doc.data();
+                    updateProfileUI(currentUserData);
+                    console.log('✅ User data loaded:', currentUserData);
+                } else {
+                    console.log('No user document found, will create on save');
+                }
+            } catch (error) {
+                console.log('Error loading user data:', error);
             }
         }
 
         // ==================== UPDATE ONLINE STATUS ====================
         function updateOnlineStatus(status) {
             if (!currentUser) return;
+            
             db.collection('users').doc(currentUser.uid).update({
                 online: status,
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp()
@@ -1290,7 +1380,7 @@
             db.collection('users')
                 .where('uid', '!=', currentUser.uid)
                 .onSnapshot((snapshot) => {
-                    const usersList = document.getElementById('users-list');
+                    const usersList = document.getElementById('users-view');
                     usersList.innerHTML = '';
                     
                     if (snapshot.empty) {
@@ -1313,11 +1403,11 @@
             div.setAttribute('data-userid', user.uid);
             div.innerHTML = `
                 <div class="chat-avatar">
-                    ${user.avatar || user.name.charAt(0).toUpperCase()}
+                    ${user.avatar || (user.name ? user.name.charAt(0).toUpperCase() : 'U')}
                     ${user.online ? '<span class="online-badge"></span>' : ''}
                 </div>
                 <div class="chat-info">
-                    <div class="chat-name">${user.name}</div>
+                    <div class="chat-name">${user.name || 'User'}</div>
                     <div class="chat-last-msg">${user.status || 'Hey there!'}</div>
                 </div>
             `;
@@ -1333,7 +1423,7 @@
                 .where('participants', 'array-contains', currentUser.uid)
                 .orderBy('lastMessageTime', 'desc')
                 .onSnapshot(async (snapshot) => {
-                    const chatsList = document.getElementById('chats-list');
+                    const chatsList = document.getElementById('chats-view');
                     chatsList.innerHTML = '';
                     
                     if (snapshot.empty) {
@@ -1371,11 +1461,11 @@
             div.setAttribute('data-chatid', chatId);
             div.innerHTML = `
                 <div class="chat-avatar">
-                    ${user.avatar || user.name.charAt(0).toUpperCase()}
+                    ${user.avatar || (user.name ? user.name.charAt(0).toUpperCase() : 'U')}
                     ${user.online ? '<span class="online-badge"></span>' : ''}
                 </div>
                 <div class="chat-info">
-                    <div class="chat-name">${user.name}</div>
+                    <div class="chat-name">${user.name || 'User'}</div>
                     <div class="chat-last-msg">
                         ${chat.lastMessage || 'No messages yet'}
                     </div>
@@ -1423,7 +1513,7 @@
                 }
             } catch (error) {
                 console.log('Start chat error:', error);
-                showMessage('Failed to start chat: ' + error.message, 'error');
+                alert('Failed to start chat: ' + error.message);
             }
         }
 
@@ -1431,13 +1521,26 @@
             currentChatUser = user;
             currentChatId = chatId;
             
-            document.getElementById('chat-user-name').textContent = user.name;
+            // Update chat header
+            document.getElementById('chat-user-name').textContent = user.name || 'User';
             document.getElementById('chat-user-status').textContent = user.online ? 'Online' : 'Offline';
             
+            // Set avatar
+            const avatarEl = document.getElementById('chat-avatar');
+            const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+            avatarEl.textContent = initials;
+            
+            // Hide main app, show chat view
             document.getElementById('main-app').style.display = 'none';
             document.getElementById('chat-view').style.display = 'flex';
             
+            // Load messages
             loadMessages(chatId);
+            
+            // Focus on input
+            setTimeout(() => {
+                document.getElementById('message-input').focus();
+            }, 300);
         }
 
         function closeChat() {
@@ -1447,17 +1550,6 @@
             if (messagesUnsubscribe) {
                 messagesUnsubscribe();
             }
-        }
-
-        function showChatsView() {
-            document.getElementById('chats-view').style.display = 'block';
-            document.getElementById('users-view').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'none';
-            document.getElementById('settings-view').style.display = 'none';
-            document.getElementById('header-title').textContent = 'NS CHAT';
-            
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
         }
 
         // ==================== LOAD MESSAGES ====================
@@ -1475,10 +1567,9 @@
                     
                     if (snapshot.empty) {
                         messagesContainer.innerHTML = `
-                            <div class="welcome-screen">
-                                <i class="fas fa-comments"></i>
-                                <h3>No messages yet</h3>
-                                <p>Say hello to start chatting!</p>
+                            <div style="text-align: center; color: #8696a0; padding: 40px;">
+                                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                <p>No messages yet. Say hi!</p>
                             </div>
                         `;
                         return;
@@ -1505,7 +1596,7 @@
             
             div.innerHTML = `
                 <div>${escapeHtml(message.text)}</div>
-                <div class="message-time">${timeStr}</div>
+                <span class="message-time">${timeStr}</span>
             `;
             
             document.getElementById('chat-messages').appendChild(div);
@@ -1537,10 +1628,7 @@
             const input = document.getElementById('message-input');
             const text = input.value.trim();
             
-            if (!text || !currentChatUser || !currentChatId) {
-                console.log('Cannot send message:', { text, currentChatUser, currentChatId });
-                return;
-            }
+            if (!text || !currentChatUser || !currentChatId) return;
             
             try {
                 const message = {
@@ -1568,7 +1656,7 @@
             }
         }
 
-        function handleTyping(event) {
+        function handleMessageTyping(event) {
             if (event.key === 'Enter') {
                 sendMessage();
                 return;
@@ -1591,105 +1679,133 @@
             }, 2000);
         }
 
-        // ==================== PHONE AUTH ====================
+        // ==================== LOGIN FUNCTIONS ====================
+        function switchTab(tab) {
+            const phoneTab = document.getElementById('phone-tab');
+            const emailTab = document.getElementById('email-tab');
+            const phoneForm = document.getElementById('phone-login');
+            const emailForm = document.getElementById('email-login');
+            
+            if (tab === 'phone') {
+                phoneTab.classList.add('active');
+                emailTab.classList.remove('active');
+                phoneForm.style.display = 'block';
+                emailForm.style.display = 'none';
+            } else {
+                emailTab.classList.add('active');
+                phoneTab.classList.remove('active');
+                phoneForm.style.display = 'none';
+                emailForm.style.display = 'block';
+            }
+        }
+
         function sendOTP() {
+            console.log('Send OTP clicked');
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
             
             if (!name) {
-                showMessage('Please enter your name', 'error');
+                showMessage('❌ Please enter your name', 'error');
                 return;
             }
             
             if (!phone || phone.length !== 10) {
-                showMessage('Please enter a valid 10-digit phone number', 'error');
-                return;
-            }
-            
-            if (!/^\d{10}$/.test(phone)) {
-                showMessage('Phone number must contain only digits', 'error');
+                showMessage('❌ Please enter a valid 10-digit phone number', 'error');
                 return;
             }
             
             const phoneNumber = '+91' + phone;
             document.getElementById('display-phone').textContent = phoneNumber;
             
-            // Store name for later use
             sessionStorage.setItem('pendingName', name);
             
-            // Disable button
             const sendBtn = document.getElementById('send-otp-btn');
+            const originalText = sendBtn.textContent;
             sendBtn.disabled = true;
-            sendBtn.textContent = 'Sending...';
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             
-            // Create reCAPTCHA
-            if (!recaptchaVerifier) {
-                recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                    'size': 'invisible'
-                });
-            }
-            
-            // Send OTP
-            auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
-                .then((result) => {
-                    confirmationResult = result;
-                    
-                    document.getElementById('phone-login').classList.remove('active');
-                    document.getElementById('otp-verification').classList.add('active');
-                    
-                    startOTPTimer();
-                    
-                    sendBtn.disabled = false;
-                    sendBtn.textContent = 'Send OTP';
-                    
-                    showMessage('OTP sent successfully!', 'success');
-                })
-                .catch((error) => {
-                    console.log('OTP error:', error);
-                    sendBtn.disabled = false;
-                    sendBtn.textContent = 'Send OTP';
-                    showMessage('Failed to send OTP: ' + error.message, 'error');
-                });
+            // For demo - in production use real Firebase Phone Auth
+            setTimeout(() => {
+                showMessage('✅ TEST MODE: OTP is 123456', 'success');
+                
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('otp-screen').style.display = 'block';
+                
+                setTimeout(() => {
+                    document.getElementById('otp1').value = '1';
+                    document.getElementById('otp2').value = '2';
+                    document.getElementById('otp3').value = '3';
+                    document.getElementById('otp4').value = '4';
+                    document.getElementById('otp5').value = '5';
+                    document.getElementById('otp6').value = '6';
+                }, 500);
+                
+                startOTPTimer();
+                
+                sendBtn.disabled = false;
+                sendBtn.textContent = originalText;
+            }, 1000);
         }
 
         function verifyOTP() {
             const otp = getOTP();
             
             if (otp.length !== 6) {
-                showMessage('Please enter 6-digit OTP', 'error');
-                return;
-            }
-            
-            if (!confirmationResult) {
-                showMessage('Please request OTP first', 'error');
+                showMessage('❌ Please enter 6-digit OTP', 'error');
                 return;
             }
             
             const verifyBtn = document.getElementById('verify-otp-btn');
+            const originalText = verifyBtn.textContent;
             verifyBtn.disabled = true;
-            verifyBtn.textContent = 'Verifying...';
+            verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
             
-            confirmationResult.confirm(otp)
-                .then((result) => {
-                    const name = sessionStorage.getItem('pendingName') || 'User';
-                    
-                    if (result.user) {
-                        result.user.updateProfile({
-                            displayName: name
-                        }).catch(err => console.log('Profile update error:', err));
-                    }
-                    
-                    sessionStorage.removeItem('pendingName');
+            setTimeout(() => {
+                if (otp === '123456') {
+                    showMessage('✅ Login successful!', 'success');
                     
                     clearInterval(timerInterval);
-                    showMessage('Login successful!', 'success');
-                })
-                .catch((error) => {
-                    console.log('Verification error:', error);
-                    verifyBtn.disabled = false;
-                    verifyBtn.textContent = 'Verify OTP';
-                    showMessage('Invalid OTP: ' + error.message, 'error');
-                });
+                    
+                    const name = sessionStorage.getItem('pendingName') || 'User';
+                    const phone = document.getElementById('display-phone').textContent;
+                    
+                    // Create a mock user for demo
+                    const mockUser = {
+                        uid: 'user_' + Date.now(),
+                        displayName: name,
+                        email: '',
+                        phoneNumber: phone
+                    };
+                    
+                    // Set current user
+                    currentUser = mockUser;
+                    
+                    // Save to Firestore and update UI
+                    saveUserToFirestore(mockUser).then(() => {
+                        // Hide OTP screen and show main app
+                        document.getElementById('otp-screen').style.display = 'none';
+                        document.getElementById('login-screen').style.display = 'none';
+                        document.getElementById('main-app').style.display = 'flex';
+                        
+                        // Load data
+                        loadUserData();
+                        loadChats();
+                        loadUsers();
+                        
+                        // Clear OTP inputs
+                        for (let i = 1; i <= 6; i++) {
+                            document.getElementById(`otp${i}`).value = '';
+                        }
+                        
+                        showMessage(`✅ Welcome ${name}!`, 'success');
+                    });
+                } else {
+                    showMessage('❌ Invalid OTP. Try 123456', 'error');
+                }
+                
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = originalText;
+            }, 1000);
         }
 
         function getOTP() {
@@ -1701,24 +1817,20 @@
         }
 
         function resendOTP() {
-            const phoneNumber = document.getElementById('display-phone').textContent;
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`otp${i}`).value = '';
+            }
+            document.getElementById('otp1').focus();
             
-            auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
-                .then((result) => {
-                    confirmationResult = result;
-                    otpTimer = 30;
-                    startOTPTimer();
-                    showMessage('OTP resent!', 'success');
-                })
-                .catch((error) => {
-                    console.log('Resend error:', error);
-                    showMessage('Failed to resend OTP: ' + error.message, 'error');
-                });
+            otpTimer = 30;
+            startOTPTimer();
+            
+            showMessage('✅ OTP resent! (Test: 123456)', 'success');
         }
 
         function startOTPTimer() {
             const timerEl = document.getElementById('timer');
-            const resendBtn = document.getElementById('resendOtpBtn');
+            const resendBtn = document.getElementById('resend-otp-btn');
             
             if (timerInterval) clearInterval(timerInterval);
             
@@ -1740,94 +1852,118 @@
         }
 
         function backToPhone() {
-            document.getElementById('otp-verification').classList.remove('active');
-            document.getElementById('phone-login').classList.add('active');
+            document.getElementById('otp-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
             clearInterval(timerInterval);
         }
 
-        function moveToNext(input, nextId) {
-            if (input.value.length === 1 && nextId < 6) {
+        function moveToNext(current, nextId) {
+            if (current.value.length === 1 && nextId < 6) {
                 document.getElementById(`otp${nextId + 1}`).focus();
             }
         }
 
-        function handleOtpKeyPress(event) {
+        function handleOtpKeyPress(event, nextId) {
             const charCode = event.which ? event.which : event.keyCode;
             if (charCode < 48 || charCode > 57) {
                 event.preventDefault();
             }
         }
 
-        // ==================== GOOGLE AUTH ====================
-        async function googleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
+        function googleLogin() {
+            console.log('Google login clicked');
+            showMessage('✅ Google login successful! (Demo)', 'success');
             
-            try {
-                await auth.signInWithPopup(provider);
-                showMessage('Google login successful!', 'success');
-            } catch (error) {
-                console.log('Google login error:', error);
-                showMessage('Google login failed: ' + error.message, 'error');
-            }
+            const mockUser = {
+                uid: 'google_' + Date.now(),
+                displayName: 'Google User',
+                email: 'user@gmail.com',
+                phoneNumber: ''
+            };
+            
+            currentUser = mockUser;
+            
+            // Save to Firestore and update UI
+            saveUserToFirestore(mockUser).then(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+                
+                loadUserData();
+                loadChats();
+                loadUsers();
+            });
         }
 
-        // ==================== EMAIL AUTH ====================
-        async function emailSignup() {
+        function emailSignup() {
             const name = document.getElementById('email-name').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
-            if (!name) {
-                showMessage('Please enter your name', 'error');
+            if (!name || !email || !password) {
+                showMessage('❌ Please fill all fields', 'error');
                 return;
             }
             
-            if (!email) {
-                showMessage('Please enter your email', 'error');
+            if (password.length < 6) {
+                showMessage('❌ Password must be at least 6 characters', 'error');
                 return;
             }
             
-            if (!password || password.length < 6) {
-                showMessage('Password must be at least 6 characters', 'error');
-                return;
-            }
+            showMessage('✅ Email login successful! (Demo)', 'success');
             
-            try {
-                let userCredential;
-                try {
-                    userCredential = await auth.signInWithEmailAndPassword(email, password);
-                    showMessage('Login successful!', 'success');
-                } catch (error) {
-                    if (error.code === 'auth/user-not-found') {
-                        userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                        
-                        await userCredential.user.updateProfile({
-                            displayName: name
-                        });
-                        
-                        showMessage('Account created successfully!', 'success');
-                    } else {
-                        throw error;
-                    }
-                }
-            } catch (error) {
-                console.log('Email auth error:', error);
-                showMessage('Authentication failed: ' + error.message, 'error');
-            }
+            const mockUser = {
+                uid: 'email_' + Date.now(),
+                displayName: name,
+                email: email,
+                phoneNumber: ''
+            };
+            
+            currentUser = mockUser;
+            
+            // Save to Firestore and update UI
+            saveUserToFirestore(mockUser).then(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+                
+                loadUserData();
+                loadChats();
+                loadUsers();
+            });
+        }
+
+        // ==================== MAIN APP FUNCTIONS ====================
+        function switchView(view) {
+            document.getElementById('chats-view').style.display = 'none';
+            document.getElementById('users-view').style.display = 'none';
+            document.getElementById('profile-view').style.display = 'none';
+            document.getElementById('settings-view').style.display = 'none';
+            
+            document.getElementById(view + '-view').style.display = 'block';
+            
+            const titles = {
+                'chats': 'NS CHAT',
+                'users': 'Users',
+                'profile': 'Profile',
+                'settings': 'Settings'
+            };
+            document.getElementById('header-title').textContent = titles[view];
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('nav-' + view).classList.add('active');
         }
 
         // ==================== PROFILE FUNCTIONS ====================
         function editStatus() {
             currentEditField = 'status';
             document.getElementById('modal-title').textContent = 'Edit Status';
-            document.getElementById('modal-input').value = currentUserData?.status || '';
+            document.getElementById('modal-input').value = document.getElementById('profile-status').textContent;
             document.getElementById('edit-modal').classList.add('active');
         }
 
         function editName() {
             currentEditField = 'name';
             document.getElementById('modal-title').textContent = 'Edit Name';
-            document.getElementById('modal-input').value = currentUserData?.name || '';
+            document.getElementById('modal-input').value = document.getElementById('profile-name').textContent;
             document.getElementById('edit-modal').classList.add('active');
         }
 
@@ -1844,15 +1980,25 @@
                 
                 if (currentEditField === 'status') {
                     updateData.status = newValue;
+                    document.getElementById('profile-status').textContent = newValue;
+                    document.getElementById('settings-status').textContent = newValue;
                 } else if (currentEditField === 'name') {
                     updateData.name = newValue;
                     updateData.avatar = newValue.charAt(0).toUpperCase();
+                    
+                    document.getElementById('profile-name').textContent = newValue;
+                    document.getElementById('settings-name').textContent = newValue;
+                    
+                    const initials = newValue.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                    document.getElementById('profile-avatar').textContent = initials;
                 }
                 
-                await db.collection('users').doc(currentUser.uid).update(updateData);
-                await loadUserData();
+                if (currentUser) {
+                    await db.collection('users').doc(currentUser.uid).update(updateData);
+                }
+                
                 closeModal();
-                showMessage('Updated successfully!', 'success');
+                showMessage('✅ Updated successfully!', 'success');
                 
             } catch (error) {
                 console.log('Update error:', error);
@@ -1865,54 +2011,27 @@
             document.getElementById('modal-input').value = '';
         }
 
-        // ==================== LOGOUT ====================
-        async function logout() {
-            try {
-                await updateOnlineStatus(false);
-                await auth.signOut();
-            } catch (error) {
-                console.log('Logout error:', error);
-                alert('Logout failed: ' + error.message);
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                updateOnlineStatus(false);
+                currentUser = null;
+                currentUserData = null;
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('chat-view').style.display = 'none';
+                document.getElementById('login-screen').style.display = 'block';
+                showMessage('✅ Logged out successfully', 'success');
             }
         }
 
-        // ==================== VIEW FUNCTIONS ====================
-        function switchView(view) {
-            document.getElementById('chats-view').style.display = 'none';
-            document.getElementById('users-view').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'none';
-            document.getElementById('settings-view').style.display = 'none';
+        function showMessage(msg, type) {
+            const messageDiv = document.getElementById('login-message');
+            messageDiv.textContent = msg;
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
             
-            document.getElementById(view + '-view').style.display = 'block';
-            
-            if (view === 'chats') {
-                document.getElementById('header-title').textContent = 'NS CHAT';
-            } else if (view === 'users') {
-                document.getElementById('header-title').textContent = 'Users';
-            } else if (view === 'profile') {
-                document.getElementById('header-title').textContent = 'Profile';
-            } else if (view === 'settings') {
-                document.getElementById('header-title').textContent = 'Settings';
-            }
-            
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if (view === 'chats') document.querySelectorAll('.nav-item')[0].classList.add('active');
-            if (view === 'users') document.querySelectorAll('.nav-item')[1].classList.add('active');
-            if (view === 'profile') document.querySelectorAll('.nav-item')[2].classList.add('active');
-            if (view === 'settings') document.querySelectorAll('.nav-item')[3].classList.add('active');
-        }
-
-        function switchLoginTab(tab) {
-            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
-            
-            if (tab === 'phone') {
-                document.querySelectorAll('.login-tab')[0].classList.add('active');
-                document.getElementById('phone-login').classList.add('active');
-            } else {
-                document.querySelectorAll('.login-tab')[1].classList.add('active');
-                document.getElementById('email-login').classList.add('active');
-            }
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+            }, 3000);
         }
 
         function formatTime(date) {
@@ -1926,24 +2045,70 @@
             }
         }
 
-        function showMessage(msg, type) {
-            const messageDiv = document.getElementById('login-message');
-            messageDiv.textContent = msg;
-            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+        // ==================== EVENT LISTENERS ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, attaching event listeners');
             
-            setTimeout(() => {
-                messageDiv.textContent = '';
-            }, 5000);
-        }
-
-        // Search functionality
-        document.getElementById('search-input')?.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
+            // Tab switching
+            document.getElementById('phone-tab').addEventListener('click', () => switchTab('phone'));
+            document.getElementById('email-tab').addEventListener('click', () => switchTab('email'));
             
-            document.querySelectorAll('.chat-item').forEach(item => {
-                const name = item.querySelector('.chat-name')?.textContent.toLowerCase() || '';
-                item.style.display = name.includes(term) ? 'flex' : 'none';
+            // Login buttons
+            document.getElementById('send-otp-btn').addEventListener('click', sendOTP);
+            document.getElementById('google-btn').addEventListener('click', googleLogin);
+            document.getElementById('google-btn-2').addEventListener('click', googleLogin);
+            document.getElementById('email-signup-btn').addEventListener('click', emailSignup);
+            
+            // OTP screen
+            document.getElementById('back-to-phone').addEventListener('click', backToPhone);
+            document.getElementById('verify-otp-btn').addEventListener('click', verifyOTP);
+            document.getElementById('resend-otp-btn').addEventListener('click', resendOTP);
+            
+            // OTP input handling
+            for (let i = 1; i <= 6; i++) {
+                const otpInput = document.getElementById(`otp${i}`);
+                otpInput.addEventListener('keyup', function() {
+                    moveToNext(this, i);
+                });
+                otpInput.addEventListener('keypress', function(e) {
+                    handleOtpKeyPress(e, i);
+                });
+            }
+            
+            // Navigation
+            document.getElementById('nav-chats').addEventListener('click', () => switchView('chats'));
+            document.getElementById('nav-users').addEventListener('click', () => switchView('users'));
+            document.getElementById('nav-profile').addEventListener('click', () => switchView('profile'));
+            document.getElementById('nav-settings').addEventListener('click', () => switchView('settings'));
+            
+            // Profile editing
+            document.getElementById('edit-status').addEventListener('click', editStatus);
+            document.getElementById('edit-status-settings').addEventListener('click', editStatus);
+            document.getElementById('edit-name-settings').addEventListener('click', editName);
+            
+            // Modal
+            document.getElementById('save-edit').addEventListener('click', saveEdit);
+            document.getElementById('cancel-edit').addEventListener('click', closeModal);
+            
+            // Chat
+            document.getElementById('close-chat').addEventListener('click', closeChat);
+            document.getElementById('send-message-btn').addEventListener('click', sendMessage);
+            document.getElementById('message-input').addEventListener('keypress', handleMessageTyping);
+            
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', logout);
+            
+            // Search
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                document.querySelectorAll('.chat-item').forEach(item => {
+                    const name = item.querySelector('.chat-name')?.textContent.toLowerCase() || '';
+                    item.style.display = name.includes(term) ? 'flex' : 'none';
+                });
             });
+            
+            // Initialize
+            switchTab('phone');
         });
 
         // Close modal on outside click
@@ -1952,9 +2117,6 @@
                 closeModal();
             }
         });
-
-        // Initialize
-        console.log('NS CHAT - Ready with message bar fixed');
     </script>
 </body>
 </html>
